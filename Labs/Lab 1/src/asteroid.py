@@ -1,4 +1,5 @@
 from random import randrange
+from random import randint
 from datetime import datetime
 
 
@@ -47,18 +48,19 @@ class Asteroid():
         return tuple(self.position)
 
     @classmethod
-    def rand_asteroid(cls):
+    def rand_asteroid(cls, max_velocity, max_position, max_radius):
         # Creates an asteroid with a random radius between [1,4], within a random position in a
         # cube 100 meters per side, with a velocity no greater than 5 m/s in any direction
-        random_velocity = [randrange(11)-5, randrange(11)-5, randrange(11)-5]
-        random_position = [randrange(101), randrange(101), randrange(101)]
-        random_radius = randrange(4)+1
-        return Asteroid(random_radius, random_position, random_velocity, datetime.now())
-
-
+        rand_vx = randint(-max_velocity, max_velocity)
+        rand_vy = randint(-max_velocity, max_velocity)
+        rand_vz = randint(-max_velocity, max_velocity)
+        velocity = [rand_vx, rand_vy, rand_vz]
+        random_position = [randrange(max_position), randrange(max_position), randrange(max_position)]
+        random_radius = randrange(max_radius)+1
+        return Asteroid(random_radius, random_position, velocity, datetime.now())
 
     def __str__(self):
-        return (f"Asteroid id: {self.id}, position: {self.position}," +
-                f"velocity: {self.velocity}, time created: {self.time_created}")
+        return f"Asteroid id: {self.id}, position: {self.position},"\
+                f"velocity: {self.velocity}, time created: {self.time_created}"
 
 
