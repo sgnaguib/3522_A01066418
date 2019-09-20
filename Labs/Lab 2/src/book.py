@@ -1,20 +1,16 @@
-class Book:
+import item
+
+
+class Book(item.Item):
     """
     Represents a library book that can be check out.
     """
 
-    def __init__(self, title, call_number, author, num_copies):
-        self.title = title
-        self.call_number = call_number
+    def __init__(self, title, call_number, num_copies, author):
+        super().__init__(title, call_number, num_copies)
         self.author = author
-        self.num_copies = num_copies
 
-    def check_availability(self):
-        """
-        Checks whether there are still copies of the book available
-        :return: whether there is at least 1 copy of the book available
-        """
-        return self.num_copies > 0
+
 
     def __str__(self):
         """
