@@ -50,7 +50,7 @@ class LibraryItemGenerator:
         publisher = input("input publisher\n")
 
         return Journal(title, call_num, int(num_copies), issue_num,
-                   publisher)
+                       publisher)
 
     @classmethod
     def gen_item(cls):

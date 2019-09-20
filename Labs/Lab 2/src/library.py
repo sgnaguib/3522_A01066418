@@ -1,6 +1,7 @@
 from catalogue import Catalogue
 from book import Book
 
+
 class Library:
     """
     Represent a library that has a collection of items.
@@ -65,15 +66,19 @@ class Library:
         """
         return self.myCatalogue.display_available_items()
 
+
 def main():
+    """
+    Driver to test implementation.
+    """
     vpl = Library()
 
     while 1:
         prompt = '\nSelect an option:\n' \
-            '1. Remove book by call number \n' \
-            '2. Check out book by call number\n' \
-            '3. Return book by call number\n'\
-            '4. Search for book by title\n'\
+            '1. Remove item by call number \n' \
+            '2. Check out item by call number\n' \
+            '3. Return item by call number\n'\
+            '4. Search for item by title\n'\
             '5. Display library catalogue\n'\
             '6. Add item to catalogue\n'\
             '7. To exit\n'

@@ -1,5 +1,6 @@
 from libraryitemgenerator import LibraryItemGenerator
 
+
 class Catalogue:
     """
     Represents a list of items stored in a library
@@ -51,7 +52,7 @@ class Catalogue:
     def check_out(self, call_number):
         """
         Checks a item out from the library if it exists.
-        Everytime a item is checked out, the number of copies available
+        Every time a item is checked out, the number of copies available
         of the item is decremented by 1.
         :param call_number: A item's call number
         :return: Message telling user whether the check out was
