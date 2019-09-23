@@ -55,8 +55,33 @@ class UserInterface:
             print(self.game.feed_tamagotchi(food_dict.get(
                                             int(food_choice))))
 
+    def activity_menu(self):
+
+        act_dict = {1: 'pillow fight', 2: 'staring contest',
+                    3: 'monopoly'}
+
+        act_menu = "\nSelect an activity:\n" \
+                    "1. Pillow Fight \n" \
+                    "2. Staring Contest \n" \
+                    "3. Monopoly \n" \
+                    "4. To go back to main menu\n"
+
+        while 1:
+
+            act_choice = input(act_menu)
+
+            if act_choice == '4':  # exit option
+                self.main_menu()
+
+            while act_choice not in ['1', '2', '3']:
+                act_choice = input("Invalid input. Try again.\n" +
+                                    act_menu)
+
+            print(self.game.play_tamagotchi(act_dict.get(
+                int(act_choice))))
+
     main_menu_dict = {1: tamagotchi_status, 2: food_menu,
-                      3: 'nothing', 4: exit}
+                      3: activity_menu, 4: exit}
 
 
 def main():

@@ -5,6 +5,9 @@ from stalin import Stalin
 from cabbage import Cabbage
 from baguette import Baguette
 from spaghetti import Spaghetti
+from pillowfight import PillowFight
+from staringcontest import StaringContest
+from monopoly import Monopoly
 
 import random
 
@@ -15,7 +18,7 @@ class Game:
     def __init__(self):
         self.tamagotchi = self.generate_rand_tamagotchi()
         self.food_list = [Cabbage(), Baguette(), Spaghetti()]
-
+        self.act_list = [PillowFight(), StaringContest(), Monopoly()]
 
     def generate_rand_tamagotchi(self):
         """
@@ -32,10 +35,9 @@ class Game:
         :return: string telling user how much the tamagotchi's
         hunger decreased.
         """
-        for element in  self.food_list:
+        for element in self.food_list:
             if element.name == food:
                 chosen_food = element
-
 
         hunger_value = chosen_food.hunger_value
         self.tamagotchi.decrease_hunger(chosen_food.hunger_value)
@@ -46,3 +48,23 @@ class Game:
             hunger_value *= 1.1
 
         return f"Yum. My hunger reduced by {hunger_value} points."
+
+    def play_tamagotchi(self, activity):
+        """
+        Determines the happines value of the input activity and
+        increases the tamgotchi's happiness by that value
+        :param activity:
+        :return: string telling user how much the tamagotchi's
+        happiness increased
+        """
+
+        for element in self.act_list:
+            if element.name == activity:
+                chosen_act = element
+
+        happiness_value = chosen_act.play(self.tamagotchi)
+        self.tamagotchi.happiness += happiness_value
+
+        return f"Yay! My happiness increased by " \
+               f"{happiness_value} points."
+
