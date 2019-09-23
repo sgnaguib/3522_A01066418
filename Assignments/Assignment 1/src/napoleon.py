@@ -1,14 +1,15 @@
 import tamagotchi
 
 
-class Mussolini(tamagotchi.Tamagotchi):
+class Napoleon(tamagotchi.Tamagotchi):
     """
-    Represents a mussolini tamagotchi
+    Represents a Napoleon tamagotchi
     """
 
     def __init__(self, health, happiness, hunger):
         super().__init__(health, happiness, hunger)
-        self.preferred_food = 'spaghetti'
+        self.preferred_food = 'baguette'
+        self.name = 'Napoleon'
 
     def tamagotchi_message(self):
         """
@@ -17,6 +18,6 @@ class Mussolini(tamagotchi.Tamagotchi):
         (or not) he is.
         """
         if self.happiness > 50:
-            return 'Dolce vida!'
+            return 'La vie est belle!'
         else:
-            return 'Quel Miseria!'
+            return "C'est la merde!"
