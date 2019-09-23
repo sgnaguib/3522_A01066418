@@ -16,49 +16,58 @@ class UserInterface:
             "2. Feed your tamagotchi \n" \
             "3. Play with your tamagotchi\n" \
             "4. To quit\n"
-        return main_menu
 
-    def print_tamagotchi_status(self):
-        print('')
+        usr_input = input(main_menu)
+
+        while usr_input not in ['1', '2', '3', '4']:
+            usr_input = input("Invalid input. Try again.\n" +
+                              main_menu)
+
+        choice = self.main_menu_dict[int(usr_input)]
+        choice(self) # why do we need to pass it self?
+
+    def tamagotchi_status(self):
+        # Checking tamagotchi status
+        print(self.game.tamagotchi.check_status())
+        self.main_menu()
+
+    def food_menu(self):
+
+        food_dict = {1: 'spaghetti', 2: 'cabbage', 3: 'baguette'}
+
+        food_menu = "\nSelect a food:\n" \
+                    "1. Spaghetti \n" \
+                    "2. Cabbage \n" \
+                    "3. Baguette\n" \
+                    "4. To go back to main menu\n"
+
+        while 1:
+
+            food_choice = input(food_menu)
+
+            if food_choice == '4':  # exit option
+                self.main_menu()
+
+            while food_choice not in ['1', '2', '3']:
+                food_choice = input("Invalid input. Try again.\n" +
+                                    food_menu)
+
+            print(self.game.feed_tamagotchi(food_dict.get(
+                                            int(food_choice))))
+
+    main_menu_dict = {1: tamagotchi_status, 2: food_menu,
+                      3: 'nothing', 4: exit}
 
 
 def main():
     """
-    Driver to test implementation.
+    Driver.
     """
     game = Game()
     ui = UserInterface(game)
     print("Welcome to your new game. A randomly selected tamgotchi "
           "has been created for you!")
-
-    while 1:
-
-        usr_input = input(ui.main_menu())
-
-        while usr_input not in ['1', '2', '3', '4']:
-            usr_input = input("Invalid input. Try again.\n" +
-                              ui.main_menu())
-
-        def option_one():
-            print(game.tamagotchi.check_status())
-
-        def option_two():
-            main_menu = "\nSelect a food:\n" \
-                        "1. Spaghetti \n" \
-                        "2. Cabbage \n" \
-                        "3. Baguette\n" \
-                        "4. To go back to main menu\n"
-            usr_input = input("Invalid input. Try again.\n" +
-                              ui.print_main_menu())
-
-        def option_three():
-            print("")
-
-        main_menu_dict = {1: option_one, 2: option_two, 3: option_three,
-                          4: exit}
-
-        main_menu_dict[int(usr_input)]()
-
+    ui.main_menu()
 
 if __name__ == '__main__':
     main()

@@ -32,9 +32,17 @@ class Game:
         :return: string telling user how much the tamagotchi's
         hunger decreased.
         """
-        for element in self.food_list:
+        for element in  self.food_list:
             if element.name == food:
-                hunger_value = element.hunger_value
-                self.tamagotchi.decrease_hunger(hunger_value)
+                chosen_food = element
+
+
+        hunger_value = chosen_food.hunger_value
+        self.tamagotchi.decrease_hunger(chosen_food.hunger_value)
+
+        if chosen_food.name == self.tamagotchi.preferred_food:
+            self.tamagotchi.decrease_hunger(
+                chosen_food.hunger_value*0.1)
+            hunger_value *= 1.1
 
         return f"Yum. My hunger reduced by {hunger_value} points."
