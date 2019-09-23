@@ -6,8 +6,8 @@ class Stalin(tamagotchi.Tamagotchi):
     Represents a Stalin tamagotchi
     """
 
-    def __init__(self, health, happiness, hunger):
-        super().__init__(health, happiness, hunger)
+    def __init__(self):
+        super().__init__('Stalin')
         self.preferred_food = 'cabbage'
 
     def tamagotchi_message(self):

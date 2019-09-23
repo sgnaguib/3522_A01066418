@@ -6,10 +6,9 @@ class Napoleon(tamagotchi.Tamagotchi):
     Represents a Napoleon tamagotchi
     """
 
-    def __init__(self, health, happiness, hunger):
-        super().__init__(health, happiness, hunger)
+    def __init__(self):
+        super().__init__('Napoleon')
         self.preferred_food = 'baguette'
-        self.name = 'Napoleon'
 
     def tamagotchi_message(self):
         """

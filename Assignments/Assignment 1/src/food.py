@@ -1,16 +1,11 @@
 import abc
 
 
-class Food(abc):
+class Food(abc.ABC):
     """
     Represents Tamagotchi food
     """
-    @property
-    @abc.abstractmethod
-    def hunger_value(self):
-        pass
 
-    @property
-    @abc.abstractmethod
-    def name(self):
-        pass
+    def __init__(self, name, hunger_value):
+        self.name = name
+        self.hunger_value = hunger_value

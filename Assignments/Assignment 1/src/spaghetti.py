@@ -1,11 +1,11 @@
 import food
 
 
-class Spaghetti(food):
+class Spaghetti(food.Food):
     """
     Represents spaghetti, a type of tamagotchi food
     """
 
-    hunger_value = 30
-    name = 'spaghetti'
+    def __init__(self):
+        super().__init__('spaghetti', 30)
 

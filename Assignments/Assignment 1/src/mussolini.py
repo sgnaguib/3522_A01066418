@@ -6,8 +6,8 @@ class Mussolini(tamagotchi.Tamagotchi):
     Represents a mussolini tamagotchi
     """
 
-    def __init__(self, health, happiness, hunger):
-        super().__init__(health, happiness, hunger)
+    def __init__(self):
+        super().__init__('Mussolini')
         self.preferred_food = 'spaghetti'
 
     def tamagotchi_message(self):
