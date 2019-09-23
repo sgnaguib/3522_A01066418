@@ -8,7 +8,7 @@ class Journal(item.Item):
     def __init__(self, title, call_number, num_copies, issue_num,
                  publisher):
         super().__init__(title, call_number, num_copies)
-        self.issue_num= issue_num
+        self.issue_num = issue_num
         self.publisher = publisher
 
     def __str__(self):
