@@ -6,11 +6,15 @@ class Napoleon(tamagotchi.Tamagotchi):
     Represents a Napoleon tamagotchi
     """
 
+    FRAGILITY = 4
+    PLAYFULNESS = 0
+    SICK_POINT = 60
+
     def __init__(self):
         super().__init__('Napoleon')
-        self.preferred_food = 'baguette'
+        self.preferred_food = ['baguette', 'spaghetti']
 
-    def tamagotchi_message(self):
+    def message(self):
         """
         a getter method for this tamagotchi's message
         :return:  Mussolini's message, telling the user how happy
@@ -20,3 +24,4 @@ class Napoleon(tamagotchi.Tamagotchi):
             return 'La vie est belle!'
         else:
             return "C'est la merde!"
+

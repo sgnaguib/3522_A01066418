@@ -27,8 +27,8 @@ class UserInterface:
         choice(self) # why do we need to pass it self?
 
     def tamagotchi_status(self):
-        # Checking tamagotchi status
-        print(self.game.tamagotchi.check_status())
+        print(self.game.check_status())
+        print(self.game.get_message())
         self.main_menu()
 
     def food_menu(self):
@@ -39,21 +39,26 @@ class UserInterface:
                     "1. Spaghetti \n" \
                     "2. Cabbage \n" \
                     "3. Baguette\n" \
-                    "4. To go back to main menu\n"
+                    '4. Medicine\n'\
+                    "5. To go back to main menu\n"
 
-        while 1:
+        food_choice = input(food_menu)
 
-            food_choice = input(food_menu)
+        while food_choice not in ['1', '2', '3', '4', '5']:
+            food_choice = input("Invalid input. Try again.\n" +
+                                food_menu)
 
-            if food_choice == '4':  # exit option
-                self.main_menu()
+        if food_choice == '5':  # exit option
+            self.main_menu()
 
-            while food_choice not in ['1', '2', '3']:
-                food_choice = input("Invalid input. Try again.\n" +
-                                    food_menu)
+        elif food_choice == '4':  # medicine option
+            print(self.game.feed_medicine())
+            self.main_menu()
 
+        else:
             print(self.game.feed_tamagotchi(food_dict.get(
-                                            int(food_choice))))
+                                    int(food_choice))))
+            self.main_menu()
 
     def activity_menu(self):
 
@@ -66,19 +71,17 @@ class UserInterface:
                     "3. Monopoly \n" \
                     "4. To go back to main menu\n"
 
-        while 1:
+        act_choice = input(act_menu)
 
-            act_choice = input(act_menu)
+        if act_choice == '4':  # exit option
+            self.main_menu()
 
-            if act_choice == '4':  # exit option
-                self.main_menu()
+        while act_choice not in ['1', '2', '3']:
+            act_choice = input("Invalid input. Try again.\n" +
+                                act_menu)
 
-            while act_choice not in ['1', '2', '3']:
-                act_choice = input("Invalid input. Try again.\n" +
-                                    act_menu)
-
-            print(self.game.play_tamagotchi(act_dict.get(
-                int(act_choice))))
+        print(self.game.play_tamagotchi(act_dict.get(
+            int(act_choice))))
 
     main_menu_dict = {1: tamagotchi_status, 2: food_menu,
                       3: activity_menu, 4: exit}

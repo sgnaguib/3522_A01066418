@@ -2,12 +2,9 @@ import tamagotchi
 from mussolini import Mussolini
 from napoleon import Napoleon
 from stalin import Stalin
-from cabbage import Cabbage
-from baguette import Baguette
-from spaghetti import Spaghetti
-from pillowfight import PillowFight
-from staringcontest import StaringContest
-from monopoly import Monopoly
+from timekeeper import TimeKeeper
+from foodlist import FoodList
+from activitylist import ActivityList
 
 import random
 
@@ -17,8 +14,21 @@ class Game:
 
     def __init__(self):
         self.tamagotchi = self.generate_rand_tamagotchi()
-        self.food_list = [Cabbage(), Baguette(), Spaghetti()]
-        self.act_list = [PillowFight(), StaringContest(), Monopoly()]
+        self.food_list = FoodList().get_food_list()
+        self.act_list = ActivityList().get_act_list()
+        TimeKeeper.time_check()
+
+    def update_status(self):
+        self.tamagotchi.update_status(TimeKeeper.time_check())
+
+    def check_status(self):
+        # print(TimeKeeper.time_check())
+        self.update_status()
+        return self.tamagotchi.check_status()
+
+    def get_message(self):
+        return self.tamagotchi.message()
+
 
     def generate_rand_tamagotchi(self):
         """
@@ -42,12 +52,17 @@ class Game:
         hunger_value = chosen_food.hunger_value
         self.tamagotchi.decrease_hunger(chosen_food.hunger_value)
 
-        if chosen_food.name == self.tamagotchi.preferred_food:
+        if chosen_food.name in self.tamagotchi.preferred_food:
             self.tamagotchi.decrease_hunger(
                 chosen_food.hunger_value*0.1)
             hunger_value *= 1.1
 
-        return f"Yum. My hunger reduced by {hunger_value} points."
+        return f"Yum. That's better. My hunger is now " \
+               f"{self.tamagotchi.hunger}."
+
+    def feed_medicine(self):
+        self.tamagotchi.health = 100
+        return "Phewf! I feel so much better. My health is now at 100"
 
     def play_tamagotchi(self, activity):
         """
@@ -62,9 +77,9 @@ class Game:
             if element.name == activity:
                 chosen_act = element
 
-        happiness_value = chosen_act.play(self.tamagotchi)
-        self.tamagotchi.happiness += happiness_value
+        increase_value = \
+            self.tamagotchi.increase_happiness(
+                chosen_act.happiness_value)
 
-        return f"Yay! My happiness increased by " \
-               f"{happiness_value} points."
+        return f"Yay! My happiness is now {self.tamagotchi.happiness}."
 

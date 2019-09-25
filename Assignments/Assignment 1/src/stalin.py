@@ -6,11 +6,17 @@ class Stalin(tamagotchi.Tamagotchi):
     Represents a Stalin tamagotchi
     """
 
+    FRAGILITY = 6
+    SICK_POINT = 30
+    PLAYFULNESS = 3
+
+
     def __init__(self):
         super().__init__('Stalin')
-        self.preferred_food = 'cabbage'
+        self.preferred_food = ['cabbage', 'spaghetti']
 
-    def tamagotchi_message(self):
+
+    def message(self):
         """
         a getter method for this tamagotchi's message
         :return:  Stalin's message, telling the user how happy
@@ -20,3 +26,5 @@ class Stalin(tamagotchi.Tamagotchi):
             return 'My mustache is happy'
         else:
             return 'My mustache is sad'
+
+
