@@ -18,13 +18,13 @@ class Game:
         self.act_list = ActivityList().get_act_list()
         TimeKeeper.time_check()
 
-    def update_status(self):
-        self.tamagotchi.update_status(TimeKeeper.time_check())
-
     def check_status(self):
-        # print(TimeKeeper.time_check())
-        self.update_status()
-        return self.tamagotchi.check_status()
+        self.tamagotchi.update_status(TimeKeeper.time_check())
+        if tamagotchi.health == 0:
+            return "Dear Jesus"
+        else:
+            return self.tamagotchi.check_status()
+
 
     def get_message(self):
         return self.tamagotchi.message()

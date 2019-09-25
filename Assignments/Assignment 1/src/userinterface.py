@@ -10,6 +10,29 @@ class UserInterface:
     def __init__(self, game):
         self.game = game
 
+    def start_menu(self):
+
+        print("\nWelcome to your new game. Are you ready to hatch your "
+              "first Tamagotchi?")
+
+        start_menu = "\nSelect an option:\n" \
+                    "1. Yes \n" \
+                    "2. No \n"
+
+        usr_input = input(start_menu)
+
+        while usr_input not in ['1', '2']:
+            usr_input = input("Invalid input. Try again.\n" +
+                              start_menu)
+
+        if usr_input == 1:
+            print("Great! A random Tamagotchi has been hatched for you")
+            self.main_menu()
+        else:
+            print("Okay! See you later.")
+            quit()
+
+
     def main_menu(self):
         main_menu = "\nSelect an option:\n" \
             "1. Check your tamagotchi's status \n" \
@@ -93,8 +116,8 @@ def main():
     """
     game = Game()
     ui = UserInterface(game)
-    print("Welcome to your new game. A randomly selected tamgotchi "
-          "has been created for you!")
+
+    ui.start_menu()
     ui.main_menu()
 
 if __name__ == '__main__':
