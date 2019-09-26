@@ -2,6 +2,9 @@ from activity import Activity
 
 
 class ActivityList:
+    """
+    List of activites used in the tamagotchi game.
+    """
 
     def __init__(self):
         p_fight = Activity('pillow fight', 20)

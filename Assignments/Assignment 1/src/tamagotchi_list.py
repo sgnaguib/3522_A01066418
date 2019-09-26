@@ -5,7 +5,9 @@ from stalin import Stalin
 
 
 class TamagotchiList:
-
+    """
+    List of all the tamagotchis used in the game.
+    """
     _tam_list = [Mussolini(), Stalin(), Napoleon()]
 
     @classmethod

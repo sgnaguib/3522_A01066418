@@ -10,7 +10,6 @@ class Tamagotchi(abc.ABC):
     MAX = 100
     MIN = 0
 
-
     def __init__(self, name, health=100, happiness=100, hunger=0):
         self.name = name
         self._health = health
@@ -21,6 +20,7 @@ class Tamagotchi(abc.ABC):
     @abc.abstractmethod
     def PLAYFULNESS(self):
         pass
+
     @property
     @abc.abstractmethod
     def FRAGILITY(self):
@@ -82,7 +82,7 @@ class Tamagotchi(abc.ABC):
         return increase_value
 
     def update_status(self, time):
-        self.hunger += time * self.FRAGILITY * 1.5
+        self.hunger += time * self.FRAGILITY
         self.happiness -= time * self.FRAGILITY
         if self.hunger < self.MAX:
             self.health -= time * self.FRAGILITY

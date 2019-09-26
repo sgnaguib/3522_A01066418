@@ -8,7 +8,8 @@ import random
 
 
 class Game:
-    """Represents a new user interaction with the tamagotchi game"""
+    """Represents a tamagotchi game in which a user can
+    check up on, feed and play with a tamagotchi"""
 
     def __init__(self):
         self.tamagotchi = self.generate_rand_tamagotchi()
@@ -27,6 +28,10 @@ class Game:
             return self.tamagotchi.check_status()
 
     def dead(self):
+        """
+        Checks whether a tamagotchi is dead
+        :return: true if the tamagotchi is dead
+        """
         self.tamagotchi.update_status(TimeKeeper.time_check())
         if self.tamagotchi.health == 0:
             return True
@@ -38,15 +43,19 @@ class Game:
                "like to do now?"
 
     def get_message(self):
-        return self.tamagotchi.message()
+        """
+        :return: Tamagotchi-specific message
+        """
 
+        return self.tamagotchi.message()
 
     def generate_rand_tamagotchi(self):
         """
         :return: a randomly selected tamagotchi
         """
-        rand = random.randint(1, 3)
+
         tamagotchi_list = TamagotchiList.get_tam_list()
+        rand = random.randint(0, len(tamagotchi_list)-1)
         return tamagotchi_list[rand]
 
     def feed_tamagotchi(self, food):

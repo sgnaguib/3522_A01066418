@@ -32,8 +32,8 @@ class UserInterface:
             print("Okay! See you later.")
             quit()
 
-
     def main_menu(self):
+
         main_menu = "\nSelect an option:\n" \
             "1. Check your tamagotchi's status \n" \
             "2. Feed your tamagotchi \n" \
@@ -59,7 +59,6 @@ class UserInterface:
             self.main_menu()
 
     def dead_menu(self):
-
         start_menu = "\nSelect an option:\n" \
                      "1. Hatch a new tamagotchi \n" \
                      "2. Quit \n"
@@ -134,7 +133,7 @@ class UserInterface:
 
             act_choice = input(act_menu)
 
-            while act_choice not in ['1', '2', '3']:
+            while act_choice not in ['1', '2', '3', '4']:
                 act_choice = input("Invalid input. Try again.\n" +
                                    act_menu)
 
@@ -151,6 +150,9 @@ class UserInterface:
             self.main_menu()
 
     def goodbye(self):
+        """
+        Deals with a user who wants to exit the game
+        """
         print("\nThanks for playing. Goodbye!")
         quit()
 
@@ -159,9 +161,6 @@ class UserInterface:
 
 
 def main():
-    """
-    Driver.
-    """
     game = Game()
     ui = UserInterface(game)
 
