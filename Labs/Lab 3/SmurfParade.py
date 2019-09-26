@@ -34,7 +34,7 @@ class SmurfParade:
         return self.smurf_list.index(item)
 
     def __reversed__(self):
-        return self.smurf_list.reversed()
+        return reversed(self.smurf_list)
 
 def main():
     parade = SmurfParade()
@@ -47,28 +47,18 @@ def main():
     print(parade.index("e"))
     print("b" in parade)
     print("c" in parade)
+
+
     for smurf in parade:
         print(smurf)
+
+    # reversed_parade = reversed(parade)
+    #
+    # for smurf in reversed_parade:
+    #     print(smurf)
 
 
 if __name__ == "__main__":
     main()
 
 
-
-# list = []
-# list.append("huh?")
-# smurf_p = SmurfParade()
-# print(len(smurf_p))
-# smurf_p.append("Smurf1")
-# smurf_p.append("Smurf2")
-# print(len(smurf_p))
-
-# my_list = [1,2,3,4]
-# print(my_list)
-# print(reversed(my_list))
-# print(list(reversed(my_list)))
-
-#my_iter = iter([1,2,3,4])
-# print(type(my_iter))
-# print(next(my_iter))
