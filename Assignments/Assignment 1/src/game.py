@@ -1,10 +1,8 @@
 import tamagotchi
-from mussolini import Mussolini
-from napoleon import Napoleon
-from stalin import Stalin
 from timekeeper import TimeKeeper
 from foodlist import FoodList
 from activitylist import ActivityList
+from tamagotchi_list import TamagotchiList
 
 import random
 
@@ -48,8 +46,8 @@ class Game:
         :return: a randomly selected tamagotchi
         """
         rand = random.randint(1, 3)
-        tamagotchi_dict = {1: Mussolini(), 2: Napoleon(), 3: Stalin()}
-        return tamagotchi_dict.get(rand)
+        tamagotchi_list = TamagotchiList.get_tam_list()
+        return tamagotchi_list[rand]
 
     def feed_tamagotchi(self, food):
         """

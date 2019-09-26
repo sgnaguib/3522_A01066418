@@ -6,7 +6,7 @@ class Stalin(tamagotchi.Tamagotchi):
     Represents a Stalin tamagotchi
     """
 
-    FRAGILITY = 8
+    FRAGILITY = 7
     SICK_POINT = 30
     PLAYFULNESS = 3
 
