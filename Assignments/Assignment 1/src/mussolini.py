@@ -6,7 +6,7 @@ class Mussolini(tamagotchi.Tamagotchi):
     Represents a mussolini tamagotchi
     """
 
-    FRAGILITY = 2
+    FRAGILITY = 5
     SICK_POINT = 50
     PLAYFULNESS = 10
 

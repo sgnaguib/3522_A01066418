@@ -6,7 +6,7 @@ class Napoleon(tamagotchi.Tamagotchi):
     Represents a Napoleon tamagotchi
     """
 
-    FRAGILITY = 4
+    FRAGILITY = 6
     PLAYFULNESS = 0
     SICK_POINT = 60
 

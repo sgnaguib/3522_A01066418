@@ -6,4 +6,4 @@ class Food():
 
     def __init__(self, name):
         self.name = name
-        self.hunger_value = 25
+        self.hunger_value = 15

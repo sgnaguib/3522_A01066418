@@ -25,7 +25,7 @@ class UserInterface:
             usr_input = input("Invalid input. Try again.\n" +
                               start_menu)
 
-        if usr_input == 1:
+        if usr_input == '1':
             print("Great! A random Tamagotchi has been hatched for you")
             self.main_menu()
         else:
@@ -51,63 +51,111 @@ class UserInterface:
 
     def tamagotchi_status(self):
         print(self.game.check_status())
-        print(self.game.get_message())
-        self.main_menu()
+
+        if self.game.dead():
+            self.dead_menu()
+        else:
+            print(self.game.get_message())
+            self.main_menu()
+
+    def dead_menu(self):
+
+        start_menu = "\nSelect an option:\n" \
+                     "1. Hatch a new tamagotchi \n" \
+                     "2. Quit \n"
+
+        usr_input = input(start_menu)
+
+        while usr_input not in ['1', '2']:
+            usr_input = input("Invalid input. Try again.\n" +
+                              start_menu)
+
+        if usr_input == '1':
+            print("Great! A random Tamagotchi has been hatched for you")
+            self.game.new_tamagotchi()
+            self.main_menu()
+        else:
+            print("Okay! See you later.")
+            quit()
 
     def food_menu(self):
 
-        food_dict = {1: 'spaghetti', 2: 'cabbage', 3: 'baguette'}
-
-        food_menu = "\nSelect a food:\n" \
-                    "1. Spaghetti \n" \
-                    "2. Cabbage \n" \
-                    "3. Baguette\n" \
-                    '4. Medicine\n'\
-                    "5. To go back to main menu\n"
-
-        food_choice = input(food_menu)
-
-        while food_choice not in ['1', '2', '3', '4', '5']:
-            food_choice = input("Invalid input. Try again.\n" +
-                                food_menu)
-
-        if food_choice == '5':  # exit option
-            self.main_menu()
-
-        elif food_choice == '4':  # medicine option
-            print(self.game.feed_medicine())
-            self.main_menu()
-
+        if self.game.dead():
+            print(self.game.dead_message())
+            self.dead_menu()
         else:
-            print(self.game.feed_tamagotchi(food_dict.get(
-                                    int(food_choice))))
-            self.main_menu()
+
+            food_dict = {1: 'spaghetti', 2: 'cabbage', 3: 'baguette'}
+
+            food_menu = "\nSelect a food:\n" \
+                        "1. Spaghetti \n" \
+                        "2. Cabbage \n" \
+                        "3. Baguette\n" \
+                        '4. Medicine\n'\
+                        "5. To go back to main menu\n"
+
+            food_choice = input(food_menu)
+
+            while food_choice not in ['1', '2', '3', '4', '5']:
+                food_choice = input("Invalid input. Try again.\n" +
+                                    food_menu)
+
+            if self.game.dead():
+                print(self.game.dead_message())
+                self.dead_menu()
+            else:
+                if food_choice == '5':  # exit option
+                    self.main_menu()
+
+                elif food_choice == '4':  # medicine option
+                    print(self.game.feed_medicine())
+                    self.main_menu()
+
+                else:
+                    print(self.game.feed_tamagotchi(food_dict.get(
+                                            int(food_choice))))
+                    self.main_menu()
 
     def activity_menu(self):
 
-        act_dict = {1: 'pillow fight', 2: 'staring contest',
-                    3: 'monopoly'}
+        if self.game.dead():
+            print(self.game.dead_message())
+            self.dead_menu()
+        else:
 
-        act_menu = "\nSelect an activity:\n" \
-                    "1. Pillow Fight \n" \
-                    "2. Staring Contest \n" \
-                    "3. Monopoly \n" \
-                    "4. To go back to main menu\n"
+            act_dict = {1: 'pillow fight', 2: 'staring contest',
+                        3: 'monopoly'}
 
-        act_choice = input(act_menu)
+            act_menu = "\nSelect an activity:\n" \
+                        "1. Pillow Fight \n" \
+                        "2. Staring Contest \n" \
+                        "3. Monopoly \n" \
+                        "4. To go back to main menu\n"
 
-        if act_choice == '4':  # exit option
+            act_choice = input(act_menu)
+
+            while act_choice not in ['1', '2', '3']:
+                act_choice = input("Invalid input. Try again.\n" +
+                                   act_menu)
+
+            if act_choice == '4':  # exit option
+                self.main_menu()
+            else:
+                if self.game.dead():
+                    print(self.game.dead_message())
+                    self.dead_menu()
+                else:
+                    print(self.game.play_tamagotchi(act_dict.get(
+                          int(act_choice))))
+
             self.main_menu()
 
-        while act_choice not in ['1', '2', '3']:
-            act_choice = input("Invalid input. Try again.\n" +
-                                act_menu)
-
-        print(self.game.play_tamagotchi(act_dict.get(
-            int(act_choice))))
+    def goodbye(self):
+        print("\nThanks for playing. Goodbye!")
+        quit()
 
     main_menu_dict = {1: tamagotchi_status, 2: food_menu,
-                      3: activity_menu, 4: exit}
+                      3: activity_menu, 4: goodbye}
 
 
 def main():
@@ -119,6 +167,7 @@ def main():
 
     ui.start_menu()
     ui.main_menu()
+
 
 if __name__ == '__main__':
     main()
