@@ -21,8 +21,8 @@ class SmurfParade:
     def __contains__(self, item):
         return item in self.smurf_list
 
-    def __iter__(self):
-        pass
+    # def __iter__(self):
+    #     return iter(self.smurf_list)
 
     def __getitem__(self, key):
         return self.smurf_list[key]
@@ -37,14 +37,33 @@ class SmurfParade:
         return self.smurt_list.reverse()
 
 def main():
-    list = []
-    list.append("huh?")
-    smurf_p = SmurfParade()
-    print(len(smurf_p))
-    smurf_p.append("Smurf1")
-    smurf_p.append("Smurf2")
-    print(len(smurf_p))
+    parade = SmurfParade()
+    parade.append("hello")
+    parade.append("hi")
+    parade.append("")
+    print(parade)
+    for smurf in parade:
+        print(smurf)
 
 
 if __name__ == "__main__":
     main()
+
+
+
+# list = []
+# list.append("huh?")
+# smurf_p = SmurfParade()
+# print(len(smurf_p))
+# smurf_p.append("Smurf1")
+# smurf_p.append("Smurf2")
+# print(len(smurf_p))
+
+# my_list = [1,2,3,4]
+# print(my_list)
+# print(reversed(my_list))
+# print(list(reversed(my_list)))
+
+#my_iter = iter([1,2,3,4])
+# print(type(my_iter))
+# print(next(my_iter))
