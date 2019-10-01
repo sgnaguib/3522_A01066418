@@ -1,6 +1,10 @@
+""" MODULE LEVEL DOCSTRING """
+
+
 class SmurfParade:
     """
     Maintains a sequence of elements.
+    This is a encapsulated list.
     This calls counts the number of elements it has
     It retrieves an element using square bracket notation
     It retieves an element by value
@@ -21,8 +25,8 @@ class SmurfParade:
     def __contains__(self, item):
         return item in self.smurf_list
 
-    def __iter__(self):
-        return iter(self.smurf_list)
+    # def __iter__(self):
+    #     return iter(self.smurf_list)
 
     def __getitem__(self, key):
         return self.smurf_list[key]
@@ -36,6 +40,7 @@ class SmurfParade:
     def __reversed__(self):
         return reversed(self.smurf_list)
 
+
 def main():
     parade = SmurfParade()
     parade.append("a")
@@ -47,15 +52,19 @@ def main():
     print(parade.index("e"))
     print("b" in parade)
     print("c" in parade)
-
+    print(f"length: {len(parade)}")
 
     for smurf in parade:
         print(smurf)
 
-    # reversed_parade = reversed(parade)
-    #
-    # for smurf in reversed_parade:
-    #     print(smurf)
+    reversed_parade = reversed(parade)
+
+    for smurf in reversed_parade:
+        print(smurf)
+
+    print("------")
+    for smurf in parade:
+        print(smurf)
 
 
 if __name__ == "__main__":
