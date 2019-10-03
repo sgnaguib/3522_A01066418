@@ -15,6 +15,7 @@ class Dictionary:
 
     def __init__(self):
         self.entries = {}
+        self.queried_words = {}
         self.loaded = False
 
     def load_dictionary(self, filepath):
@@ -34,7 +35,16 @@ class Dictionary:
         :param word:
         :return:
         """
-        return self.entries[word]
+        lower_word = word.lower()
+        self.queried_words[lower_word] = self.entries[lower_word]
+        return self.entries[lower_word]
+
+    def formatted_query_list(self):
+        formatted_list = ""
+        for element in self.queried_words:
+            formatted_list += (f"{element}\n"
+                                f"{self.queried_words[element]}\n")
+        return formatted_list
 
 
 def main():
@@ -45,12 +55,17 @@ def main():
     dictionary.load_dictionary(Path.cwd()/'data.json')
     #print(dictionary.query_definition("bay"))
 
+
     while True:
         usr_input = input("Please enter a word you would like to query "
                           "in the dictionary\nor enter 'exitprogram' "
                           "to quit\n")
         if usr_input == 'exitprogram':
             print("Okay, goodbye!")
+
+            FileHandler.write_lines(Path.cwd()/'queried_words.txt',
+                                    dictionary.formatted_query_list())
+
             exit()
         else:
             print(f"{dictionary.query_definition(usr_input)}\n")
