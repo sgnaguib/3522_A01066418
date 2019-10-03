@@ -8,7 +8,6 @@ the driver methods
 """
 
 
-
 class Dictionary:
     """
 
@@ -16,13 +15,18 @@ class Dictionary:
 
     def __init__(self):
         self.entries = {}
+        self.loaded = False
+
     def load_dictionary(self, filepath):
         """Responsible for loading
         data into the dictionary
         """
         self.entries = FileHandler.load_data(filepath,
                                              FileExtensions.JSON)
-        print(self.entries["acidity"])
+        if self.entries:
+            # if dictionary is not empty.
+            self.loaded = True
+
 
     def query_definition(self, word):
         """
@@ -30,6 +34,7 @@ class Dictionary:
         :param word:
         :return:
         """
+        return self.entries[word]
 
 
 def main():
@@ -38,6 +43,18 @@ def main():
     #                                                 "really?")
     dictionary = Dictionary()
     dictionary.load_dictionary(Path.cwd()/'data.json')
+    #print(dictionary.query_definition("bay"))
+
+    while True:
+        usr_input = input("Please enter a word you would like to query "
+                          "in the dictionary\nor enter 'exitprogram' "
+                          "to quit\n")
+        if usr_input == 'exitprogram':
+            print("Okay, goodbye!")
+            exit()
+        else:
+            print(f"{dictionary.query_definition(usr_input)}\n")
+
 
 
 if __name__ == '__main__':
