@@ -1,4 +1,5 @@
 from file_handler import FileHandler
+from file_handler import FileExtensions
 from pathlib import Path
 """
 Modules is responsible for housing the dictionary class and
@@ -26,8 +27,10 @@ class Dictionary:
 
 
 def main():
+    FileHandler.load_data(Path.cwd()/'data.json', FileExtensions.JSON)
+    FileHandler.write_lines(Path.cwd()/'check.txt', "Does this work?\n"
+                                                    "really?")
 
-    FileHandler.load_data(Path.cwd()/'data.json', 2)
 
 if __name__ == '__main__':
     main()

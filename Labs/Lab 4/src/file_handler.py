@@ -1,10 +1,11 @@
 from pathlib import Path
 from enum import Enum
+import json
 
 
 class FileExtensions(Enum):
-    TXT = '.txt'
-    JSON = '.json'
+    TXT = 1
+    JSON = 2
 
 class InvalidFileTypeError:
     def __init__(self, invalid_char):
@@ -23,24 +24,31 @@ class FileHandler:
         :param file_extension:
         :return:
         """
-        test = '.txt'
-        print(FileExtensions.TXT.value)
         file = Path(path)
         if file.is_file():
         # file exists, check that extensions match
             print('it exists')
-            if test.lower().endswith((FileExtensions.JSON.value,
-                                     FileExtensions.TXT.value)):
-                print("extensions match")
+            if file_extension == FileExtensions.JSON:
+                print('its a json!')
+                json_file = open(path, mode='r', encoding='utf-8')
+                return json.load(json_file)
+            if file_extension == FileExtensions.TXT:
+                print("its a txt!")
+                text_file = open(path, mode='r',
+                                encoding='utf-8')
+                return text_file.read()
+
         else:
             print("doesn't exist")
 
     @staticmethod
-    def write_lines(self, path, lines):
+    def write_lines(path, lines):
         """
         Appends the given lines to a text file
         :param path:
         :param lines:
         :return:
         """
+        with open(path, mode='a') as my_text_file:
+            my_text_file.write(lines)
 
