@@ -6,12 +6,13 @@ import json
 class FileExtensions(Enum):
     TXT = 1
     JSON = 2
+    PDF = 3
 
-class InvalidFileTypeError:
-    def __init__(self, invalid_char):
+
+class InvalidFileTypeError(Exception):
+    def __init__(self):
         super().__init__(f"Error: the type of file you have tried "
                          f"to load is invalid")
-        self.invalid_char = invalid_char
 
 class FileHandler:
 
@@ -26,20 +27,22 @@ class FileHandler:
         """
         file = Path(path)
         if file.is_file():
-        # file exists, check that extensions match
-            print('it exists')
+        # file exists
             if file_extension == FileExtensions.JSON:
-                print('its a json!')
-                json_file = open(path, mode='r', encoding='utf-8')
-                return json.load(json_file)
+                try:
+                    with open(path, mode='r', encoding='utf-8') \
+                            as json_file:
+                        return json.load(json_file)
+                except Exception:
+                    raise InvalidFileTypeError()
+
             if file_extension == FileExtensions.TXT:
-                print("its a txt!")
-                text_file = open(path, mode='r',
-                                encoding='utf-8')
-                return text_file.read()
+                with open(path, mode='r',
+                                encoding='utf-8') as text_file:
+                    return text_file.read()
 
         else:
-            print("doesn't exist")
+            raise Exception("Error. The file does not exist.")
 
     @staticmethod
     def write_lines(path, lines):
@@ -51,4 +54,5 @@ class FileHandler:
         """
         with open(path, mode='a') as my_text_file:
             my_text_file.write(lines)
+
 
