@@ -23,11 +23,15 @@ class FileHandler:
         :param file_extension:
         :return:
         """
-        #print(FileExtensions.TEXT)
+        test = '.txt'
+        print(FileExtensions.TXT.value)
         file = Path(path)
         if file.is_file():
-        # file exists
+        # file exists, check that extensions match
             print('it exists')
+            if test.lower().endswith((FileExtensions.JSON.value,
+                                     FileExtensions.TXT.value)):
+                print("extensions match")
         else:
             print("doesn't exist")
 
