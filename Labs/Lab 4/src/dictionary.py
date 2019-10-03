@@ -1,3 +1,12 @@
+from file_handler import FileHandler
+from pathlib import Path
+"""
+Modules is responsible for housing the dictionary class and
+the driver methods
+"""
+
+
+
 class Dictionary:
     """
 
@@ -14,3 +23,11 @@ class Dictionary:
         :param word:
         :return:
         """
+
+
+def main():
+
+    FileHandler.load_data(Path.cwd()/'data.json', 2)
+
+if __name__ == '__main__':
+    main()
