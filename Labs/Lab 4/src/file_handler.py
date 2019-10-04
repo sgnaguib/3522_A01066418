@@ -4,9 +4,9 @@ import json
 
 
 class FileExtensions(Enum):
+    """Enumerated type, with two valid states: TXT, JSON"""
     TXT = 1
     JSON = 2
-    PDF = 3
 
 
 class InvalidFileTypeError(Exception):
@@ -15,15 +15,16 @@ class InvalidFileTypeError(Exception):
                          f"to load is invalid")
 
 class FileHandler:
+    """
+    has functions for loading data from a JSON or TXT file and
+    writing lines to as a txt file
+    """
 
     @staticmethod
     def load_data(path, file_extension):
         """
         Responsbile for checking the file extension and
         reading the file accordingly. Raises exceptions if...
-        :param path:
-        :param file_extension:
-        :return:
         """
         file = Path(path)
         if file.is_file():
@@ -48,9 +49,6 @@ class FileHandler:
     def write_lines(path, lines):
         """
         Appends the given lines to a text file
-        :param path:
-        :param lines:
-        :return:
         """
         with open(path, mode='a') as my_text_file:
             my_text_file.write(lines)
