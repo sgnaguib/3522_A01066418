@@ -1,4 +1,4 @@
-from ui import UI
+from example import UI
 
 class CardManager:
     """
@@ -42,9 +42,9 @@ class CardManager:
 
 
 def main():
-    ui = UI()
-    wallet = CardManager(ui)
-    wallet.main_menu()
+    UI.start()
+    # wallet = CardManager()
+    # wallet.main_menu()
 
 
 if __name__ == '__main__':
