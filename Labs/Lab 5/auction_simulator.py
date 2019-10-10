@@ -1,6 +1,8 @@
+import random
 """
 Contains  all the classes for lab5.
 """
+
 
 class Auction:
     """
@@ -15,7 +17,13 @@ class Auction:
         self.auctioneer = Auctioneer(bidders)
 
     def place_first_bid(self):
-        self.auctioneer.process_bid(self.starting_price)
+        self.auctioneer.place_bid(self.starting_price, None)
+
+    def print_winner(self):
+        print(f"The winner of the auction is "
+              f"{self.auctioneer.highest_current_bidder} at "
+              f"${self.auctioneer.highest_current_bid}")
+
 
 class Auctioneer:
     """
@@ -29,19 +37,26 @@ class Auctioneer:
         self.highest_current_bid = 0
         self.highest_current_bidder = None
 
-    def process_bid(self, amount):
+    def place_bid(self, amount, bidder):
         """
         Allows auctioneer to accept a new bid if
         this bid is greater than the current_highest_bid
         :return:
         """
-    def notify_bidders(self):
+        if amount > self.highest_current_bid:
+            self.highest_current_bid = amount
+            self.highest_current_bidder = bidder
+            self.notify_bidders(bidder)
+
+    def notify_bidders(self, latest_bidder):
         """
         Allows auctioneer to notify all bidders of a new bid,
         except the bidder that placed the latest bid.
         :return:
         """
-
+        for bidder in self.bidders:
+            if bidder is not latest_bidder:
+                bidder(self)
 
 
 class Bidder:
@@ -70,6 +85,12 @@ class Bidder:
         :param auctioneer:
         :return:
         """
+        if self is not auctioneer.highest_current_bidder and \
+                self.budget > auctioneer.highest_current_bid and \
+                random.random() < self.bid_probability:
+            auctioneer.place_bid(auctioneer.highest_current_bid *
+                                 self.bid_increase_perc, self)
+
 
 
 def main():
@@ -91,6 +112,8 @@ def main():
         count += 1
 
     my_auction = Auction(bidder_list, item_name, starting_price)
+    my_auction.place_first_bid()
+    print("The winner of the auction is ")
 
 
 if __name__ == "__main__":
