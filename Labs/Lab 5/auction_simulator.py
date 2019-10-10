@@ -13,16 +13,19 @@ class Auction:
     def __init__(self, bidders, item, starting_price):
         self.bidders = bidders
         self.item = item
-        self.starting_price = starting_price
+        self.starting_price = float(starting_price)
         self.auctioneer = Auctioneer(bidders)
 
     def place_first_bid(self):
+        print(f"Auctioninng {self.item} starting at "
+              f"${round(self.starting_price,1)}")
         self.auctioneer.place_bid(self.starting_price, None)
+
 
     def print_winner(self):
         print(f"The winner of the auction is "
               f"{self.auctioneer.highest_current_bidder} at "
-              f"${self.auctioneer.highest_current_bid}")
+              f"${round(self.auctioneer.highest_current_bid, 1)}")
 
 
 class Auctioneer:
@@ -34,7 +37,7 @@ class Auctioneer:
 
     def __init__(self, bidders):
         self.bidders = bidders
-        self.highest_current_bid = 0
+        self.highest_current_bid = 0.0
         self.highest_current_bidder = None
 
     def place_bid(self, amount, bidder):
@@ -43,7 +46,11 @@ class Auctioneer:
         this bid is greater than the current_highest_bid
         :return:
         """
-        if amount > self.highest_current_bid:
+        if int(amount) > self.highest_current_bid:
+            if bidder is not None:
+                print(f"{bidder} bid {round(amount,1)} in "
+                      f"response to {self.highest_current_bidder}'s"
+                      f" bid of ${round(self.highest_current_bid,1)}")
             self.highest_current_bid = amount
             self.highest_current_bidder = bidder
             self.notify_bidders(bidder)
@@ -70,9 +77,9 @@ class Bidder:
     def __init__(self, name, budget, bid_probability,
                  bid_increase_perc):
         self.name = name
-        self.budget = budget
-        self.bid_probability = bid_probability
-        self.bid_increase_perc = bid_increase_perc
+        self.budget = float(budget)
+        self.bid_probability = float(bid_probability)
+        self.bid_increase_perc = float(bid_increase_perc)
         self.highest_bid = 0
 
     def __call__(self, auctioneer):
@@ -88,9 +95,12 @@ class Bidder:
         if self is not auctioneer.highest_current_bidder and \
                 self.budget > auctioneer.highest_current_bid and \
                 random.random() < self.bid_probability:
+
             auctioneer.place_bid(auctioneer.highest_current_bid *
                                  self.bid_increase_perc, self)
 
+    def __str__(self):
+        return self.name
 
 
 def main():
@@ -103,17 +113,17 @@ def main():
     count = 0
     while count < int(number_bidders):
         name = input(f"Please input bidder {count}'s name\n")
-        budget = input(f"Please input bidder {count}'s budget")
+        budget = input(f"Please input bidder {count}'s budget\n")
         bid_probability = input(f"Please input bidder {count}'s bid probability\n")
-        bid_increase_perc = input(f"Please input bidder {count}'s bid"
-                                  f"increase percentage")
+        bid_increase_perc = input(f"Please input bidder {count}'s bid "
+                                  f"increase percentage\n")
         bidder_list.append(Bidder(name, budget, bid_probability,
                                   bid_increase_perc))
         count += 1
 
     my_auction = Auction(bidder_list, item_name, starting_price)
     my_auction.place_first_bid()
-    print("The winner of the auction is ")
+    my_auction.print_winner()
 
 
 if __name__ == "__main__":
