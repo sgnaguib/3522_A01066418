@@ -30,7 +30,8 @@ class Auction:
         print("Highest bids Per Bidder")
         top_bids = self.auctioneer.bidder_dictionary()
         for bidder in self.bidders:
-            print(f"Bidder: {bidder}, Highest Bid: {top_bids[bidder]}")
+            print(f"Bidder: {bidder}, "
+                  f"Highest Bid: ${round(top_bids[bidder],1)}")
 
 
 class Auctioneer:
@@ -56,7 +57,7 @@ class Auctioneer:
                 print(f"{bidder} bid {round(amount,1)} in "
                     f"response to {self.highest_current_bidder}'s"
                     f" bid of ${round(self.highest_current_bid,1)}")
-            elif self.highest_current_bidder is not None:
+            elif bidder is not None:
                 print(f"{bidder} bid {round(amount, 1)} in "
                       f"response to starting bid of"
                       f" ${round(self.highest_current_bid, 1)}")
@@ -123,16 +124,70 @@ def main():
     print("Let's have an auction!\n")
     item_name = input("Please input the name of the item you'd like "
                       "auctioned.\n")
-    starting_price = input("Please input the starting price of the item.\n")
-    number_bidders = input("Please input the number of bidders you want to have.\n")
+
+    invalid = True
+    while invalid:
+        try:
+            starting_price = float(input("Please input the starting "
+                                         "price of the item.\n"))
+            invalid = False
+        except ValueError:
+            print("Your input was invalid. Please enter a number.")
+
+    invalid = True
+    while invalid:
+        try:
+            number_bidders = int(input("Please input the number of "
+                                       "bidders you want to have.\n"))
+            if number_bidders <= 0:
+                raise Exception
+            else:
+                invalid = False
+        except Exception:
+            print("Your input was invalid. "
+                  "Please enter an integer greater than zero")
+
     bidder_list = []
     count = 0
-    while count < int(number_bidders):
+    while count < number_bidders:
         name = input(f"Please input bidder {count}'s name\n")
-        budget = input(f"Please input bidder {count}'s budget\n")
-        bid_probability = input(f"Please input bidder {count}'s bid probability\n")
-        bid_increase_perc = input(f"Please input bidder {count}'s bid "
-                                  f"increase percentage\n")
+
+        invalid_input = True
+        while invalid_input:
+            try:
+                budget = float(input(f"Please input bidder {count}'s "
+                                     f"budget\n"))
+                if budget > 0:
+                    invalid_input = False
+                else:
+                    raise Exception
+            except Exception:
+                print("Please enter a number greater than 0.")
+
+        invalid = True
+        while invalid:
+            try:
+                bid_probability = float(input(f"Please input bidder {count}'s "
+                                        f"bid probability\n"))
+                if 1 > bid_probability > 0:
+                    invalid = False
+                else:
+                    raise Exception
+            except:
+                print("Please enter a decimal between 0.0 and 0.99")
+
+        invalid_input = True
+        while invalid_input:
+            try:
+                bid_increase_perc = float(input(f"Please input bidder {count}'s bid "
+                                  f"increase percentage\n"))
+                if bid_increase_perc > 1:
+                    invalid_input = False
+                else:
+                    raise Exception
+            except Exception:
+                print("Please enter a decimal greater than 1")
+
         bidder_list.append(Bidder(name, budget, bid_probability,
                                   bid_increase_perc))
         count += 1
