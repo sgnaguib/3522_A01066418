@@ -4,8 +4,8 @@ from cardmanager import CardManager
 
 class UI:
 
-    def __init__(self, wallet):
-        self.wallet = wallet
+    def __init__(self, manager):
+        self.manager = manager
 
         view_options = [("Main Menu", Menu.CLOSE)]
 
@@ -13,7 +13,8 @@ class UI:
             options=view_options,
             title="Your Cards",
             message="Select 1 to return to the main menu "
-                    "or select your card to view its information")
+                    "or select your card to view its information",
+            refresh=self.get_cards)
 
         business_options = [("Personal Business Card", self.add_card,
                              {'card_type': 'Personal Card'}),
@@ -58,8 +59,17 @@ class UI:
         self.main_menu.set_prompt(">")
 
     def add_card(self, card_type):
-        self.wallet.add_card(card_type)
+        self.manager.add_card(card_type)
 
+    def get_cards(self):
+        view_options = [("Main Menu", Menu.CLOSE)]
+        for card in self.manager.cards:
+            view_options.append((card.name, self.print_card,
+                                        {'card': card}))
+        self.view_cards.options = view_options
+
+    def print_card(self, card):
+        print(str(card))
 
     def search_card(self):
         pass
@@ -75,8 +85,8 @@ class UI:
 
 
 def main():
-    wallet = CardManager()
-    ui = UI(wallet)
+    manager = CardManager()
+    ui = UI(manager)
     ui.run()
 
 

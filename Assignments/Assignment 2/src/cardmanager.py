@@ -10,20 +10,16 @@ class CardManager:
     """
 
     types = {'Bank Card': BankCard, 'Punch Card': PunchCard,
-             'ID': IdCard, 'Membership Card': MembershipCard,
+             'ID Card': IdCard, 'Membership Card': MembershipCard,
              'Gift Card': GiftCard, 'Personal Card': PersonalCard,
              'Business Card': BusinessCard}
 
     def __init__(self):
-        self.wallet = []
-
+        self.cards = []
 
     def add_card(self, card_type):
 
-        self.wallet.append(self.types[card_type]("AN ID CARD"))
-        print(self.wallet)
-
-
+        self.cards.append(self.types[card_type]())
 
     def search_card(self):
         pass
@@ -34,12 +30,6 @@ class CardManager:
     def export_cards(self):
         pass
 
-    def leave(self):
-        """
-        Exits the program
-         """
-        print("\nThanks for using e-wallet. Goodbye!")
-        quit()
 
 
 

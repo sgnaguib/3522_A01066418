@@ -67,6 +67,7 @@ class Menu(object):
             raise TypeError(handler, "handler is not callable")
         self.options += [(name, handler, kwargs)]
 
+
     # open the menu
     def open(self):
         self.is_open = True
