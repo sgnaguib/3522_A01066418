@@ -1,4 +1,5 @@
-from example import UI
+from card import *
+
 
 class CardManager:
     """
@@ -8,13 +9,21 @@ class CardManager:
     be backed up a .txt file.
     """
 
-    def __init__(self, ui):
-        self.wallet = []
-        self.ui = ui
+    types = {'Bank Card': BankCard, 'Punch Card': PunchCard,
+             'ID': IdCard, 'Membership Card': MembershipCard,
+             'Gift Card': GiftCard, 'Personal Card': PersonalCard,
+             'Business Card': BusinessCard}
 
-    def add_card(self):
-        print("poop")
-        self.ui.add_card_menu()
+    def __init__(self):
+        self.wallet = []
+
+
+    def add_card(self, card_type):
+
+        self.wallet.append(self.types[card_type]("AN ID CARD"))
+        print(self.wallet)
+
+
 
     def search_card(self):
         pass
@@ -32,21 +41,6 @@ class CardManager:
         print("\nThanks for using e-wallet. Goodbye!")
         quit()
 
-    def main_menu(self):
-        choice = self.ui.main_menu()
-        self.main_menu_dict.get(choice)(self) # why this again?
-
-    main_menu_dict = {1: add_card, 2: search_card,
-                      3: delete_card, 4: export_cards,
-                      5: leave}
 
 
-def main():
-    UI.start()
-    # wallet = CardManager()
-    # wallet.main_menu()
-
-
-if __name__ == '__main__':
-    main()
 
