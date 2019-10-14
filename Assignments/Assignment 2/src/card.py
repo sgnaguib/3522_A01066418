@@ -9,7 +9,12 @@ class Card(abc.ABC):
                           " (i.e. Shopper's Membership Card)\n")
 
     def __str__(self):
-        return str(self.__dict__)
+
+        string = ""
+        for element in self.__dict__:
+            string += (f"{element.title().replace('_', ' ')}: "
+                        f"{self.__dict__[element]}\n")
+        return string
 
 
 class IdCard(Card):

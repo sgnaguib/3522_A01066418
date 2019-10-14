@@ -69,13 +69,38 @@ class UI:
         self.view_cards.options = view_options
 
     def print_card(self, card):
+        print("Card Details:\n")
         print(str(card))
 
     def search_card(self):
-        pass
+        card_name = input("Please input the name of the card"
+                          " you'd like to find\n")
+        found = False
+        for card in self.manager.cards:
+            if card.name == card_name:
+                found = True
+                print(f"\nWe found your card. Here is its information:\n"
+                      f"{str(card)}")
+        if not found:
+            print(f"Sorry - there is no card by that name\n")
+
+        input("Press Enter to return to main menu...\n")
+
 
     def delete_card(self):
-        pass
+        card_name = input("Please input the name of the card"
+                          " you'd like to delete\n")
+        found = False
+        for card in self.manager.cards:
+            if card.name == card_name:
+                found = True
+                self.manager.cards.remove(card)
+                print(
+                    f"\nYour Card Was Successfully Deleted\n")
+        if not found:
+            print(f"Sorry - there is no card by that name\n")
+
+        input("Press Enter to return to main menu...\n")
 
     def back_up(self):
         pass
