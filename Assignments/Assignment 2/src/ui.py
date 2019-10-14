@@ -50,7 +50,8 @@ class UI:
                       ("Add a card", self.add_menu.open),
                       ("Search for a card", self.search_card),
                       ("Delete a card", self.delete_card),
-                      ("Back up data", self.back_up)]
+                      ("Back up data", self.back_up),
+                      ("Exit program", self.goodbye)]
 
         self.main_menu = Menu(
             options=mm_options,
@@ -68,6 +69,7 @@ class UI:
                                         {'card': card}))
         self.view_cards.options = view_options
 
+
     def print_card(self, card):
         print("Card Details:\n")
         print(str(card))
@@ -75,35 +77,41 @@ class UI:
     def search_card(self):
         card_name = input("Please input the name of the card"
                           " you'd like to find\n")
-        found = False
-        for card in self.manager.cards:
-            if card.name == card_name:
-                found = True
-                print(f"\nWe found your card. Here is its information:\n"
-                      f"{str(card)}")
-        if not found:
+
+        card = self.manager.search_card(card_name)
+
+        if card is not None:
+            print(f"\nWe found your card. Here is its information:\n"
+                  f"{str(card)}")
+        else:
             print(f"Sorry - there is no card by that name\n")
 
         input("Press Enter to return to main menu...\n")
 
 
     def delete_card(self):
+
         card_name = input("Please input the name of the card"
                           " you'd like to delete\n")
-        found = False
-        for card in self.manager.cards:
-            if card.name == card_name:
-                found = True
-                self.manager.cards.remove(card)
-                print(
-                    f"\nYour Card Was Successfully Deleted\n")
-        if not found:
+
+        deleted = self.manager.delete_card(card_name)
+
+        if deleted:
+            print(f"\nYour Card Was Successfully Deleted\n")
+        else:
             print(f"Sorry - there is no card by that name\n")
 
         input("Press Enter to return to main menu...\n")
 
     def back_up(self):
-        pass
+        self.manager.export_cards()
+
+    def goodbye(self):
+        """
+        Deals with a user who wants to exit the game
+        """
+        print("\nThanks for using iWallet. Goodbye!")
+        quit()
 
     def run(self):
         self.main_menu.open()

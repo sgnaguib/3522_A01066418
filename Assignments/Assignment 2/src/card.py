@@ -16,6 +16,20 @@ class Card(abc.ABC):
                         f"{self.__dict__[element]}\n")
         return string
 
+    def export_format(self):
+        string = ""
+        first = True
+        for element in self.__dict__:
+            details = (f"{element.title().replace('_', ' ')}: "
+                            f"{self.__dict__[element]}")
+            if first:
+                string += details
+                first = False
+            else:
+                string += (f", {details}")
+
+        return string
+
 
 class IdCard(Card):
 
