@@ -46,7 +46,6 @@ class Card:
 
 
 class InstitutionCard(Card):
-
     def __init__(self, cardholder_name="", card_number="",
                  issue_date="", expiry_date="", **kwargs):
         super().__init__(**kwargs)
@@ -75,7 +74,6 @@ class GiftCard(Card):
 
 
 class PunchCard(Card):
-
     def __init__(self, business_name="",
                  punches_available="", punches_claimed="", **kwargs):
         super().__init__(**kwargs)
@@ -91,13 +89,10 @@ class BankCard(InstitutionCard):
         self.name_of_bank = name_of_bank
 
 
-
 class SchoolCard(InstitutionCard):
-
     def __init__(self, name_of_school="", **kwargs):
         super().__init__(**kwargs)
         self.name_of_school= name_of_school
-
 
 
 class GovID(InstitutionCard):
@@ -129,6 +124,8 @@ class BusinessCard(ContactCard):
 
 
 class CardEnum(Enum):
+    """Contains all the different types of cards accepted
+    defined above"""
     BANK_CARD = "Bank Card"
     PUNCH_CARD = "Punch Card"
     SCHOOL_CARD = "School Card"

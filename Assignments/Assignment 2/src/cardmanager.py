@@ -16,20 +16,17 @@ class CardManager:
              'Gift Card': GiftCard, 'Personal Card': PersonalCard,
              'Business Card': BusinessCard}
 
-
     def __init__(self):
         self.cards = []
 
     def add_card(self, card_type, **kwargs):
-        new_card = self.types[card_type](**kwargs)
+        try:
+            new_card = self.types[card_type](**kwargs)
+        except Exception:
+            raise Exception("Invalid Card Type")
+
         self.cards.append(new_card)
-        print(new_card)
-        # replace args with dictionary
-        #
-        #     new_card = self.types[card_type](*args)
-        # self.types[card_type].generate_card()
-        #     print(new_card)
-            #self.cards.append(new_card)
+        return new_card
 
     def get_card(self, card_type):
         return self.types[card_type]()
@@ -43,6 +40,7 @@ class CardManager:
     def delete_card(self, card_name):
         for card in self.cards:
             if card.card_name == card_name:
+                self.cards.remove(card)
                 return True
         return False
 
@@ -55,6 +53,7 @@ class CardManager:
             for card in self.cards:
                 the_file.write(f"{card.export_format()}\n")
         the_file.close()
+        return file_name
 
 
 
