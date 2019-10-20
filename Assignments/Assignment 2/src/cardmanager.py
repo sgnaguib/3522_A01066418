@@ -2,6 +2,7 @@ from card import *
 from pathlib import Path
 import arrow
 
+
 class CardManager:
     """
     Manages a list of a variety of different
@@ -45,6 +46,11 @@ class CardManager:
         return False
 
     def export_cards(self):
+        """
+        Exports the list of cards as a txt file
+        :return: the name of the exported file
+        """
+
         day = arrow.now().format('DDMMYY')
         time = arrow.now().format('HHMM')
         file_name = (f'iWallet_Export_{day}_{time}.txt')

@@ -61,6 +61,9 @@ class UI:
         return cards_list
 
     def add_card(self, card_type):
+        """Gets all the attributes associated with a particular
+        card type and prompts the user to input information for
+        these of the attributes"""
         card = self.manager.get_card(card_type)
         new_dict = card.__dict__
         for attribute in card.__dict__:
@@ -73,13 +76,16 @@ class UI:
         input("Press Enter to return to the add menu...\n")
 
     def list_cards(self):
+        """Generates the menu list of all the card's currently
+        being stored"""
         view_options = [("Main Menu", Menu.CLOSE)]
         for card in self.manager.cards:
             view_options.append((card.card_name, self.print_card,
                                         {'card': card}))
         self.view_cards.options = view_options
 
-    def print_card(self, card):
+    @staticmethod
+    def print_card(card):
         print("Card Details:\n")
         print(str(card))
         input("Press Enter to return to main menu...\n")
@@ -98,9 +104,7 @@ class UI:
 
         input("Press Enter to return to main menu...\n")
 
-
     def delete_card(self):
-
         card_name = input("Please input the name of the card"
                           " you'd like to delete\n")
 
@@ -116,6 +120,7 @@ class UI:
     def back_up(self):
         self.manager.export_cards()
 
+    @staticmethod
     def goodbye(self):
         """
         Deals with a user who wants to exit the game
