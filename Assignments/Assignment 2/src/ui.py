@@ -1,10 +1,17 @@
 from menu import Menu
 from cardmanager import CardManager
+from card import CardEnum
 
 
 class UI:
-
+    """
+    Represents the text-based UI for a card manager.
+    """
     def __init__(self, manager):
+        """
+        Initializes all the menu options of the UI
+        :param manager:
+        """
         self.manager = manager
 
         view_options = [("Main Menu", Menu.CLOSE)]
@@ -14,32 +21,9 @@ class UI:
             title="Your Cards",
             message="Select 1 to return to the main menu "
                     "or select your card to view its information",
-            refresh=self.get_cards)
+            refresh=self.list_cards)
 
-        business_options = [("Personal Business Card", self.add_card,
-                             {'card_type': 'Personal Card'}),
-                            ("Corporate Business Card", self.add_card,
-                             {'card_type': 'Business'}),
-                            ("Go Back", Menu.CLOSE)]
-
-        self.business_menu = Menu(
-            options=business_options,
-            title="Add Menu",
-            message="Please select the type of business card you'd "
-                    "like to add")
-
-        add_options = [("Bank card", self.add_card,
-                        {'card_type': 'Bank Card'}),
-                       ("Punch Card", self.add_card,
-                        {'card_type': 'Punch Card'}),
-                       ("ID Card", self.add_card,
-                        {'card_type': 'ID Card'}),
-                       ("Membership Card", self.add_card,
-                        {'card_type': 'Membership Card'}),
-                       ("Gift Card", self.add_card,
-                        {'card_type': 'Gift Card'}),
-                       ("Business Card", self.business_menu.open),
-                       ("Main Menu", Menu.CLOSE)]
+        add_options = self.get_card_options()
 
         self.add_menu = Menu(
             options=add_options,
@@ -59,20 +43,46 @@ class UI:
             message="Welcome to iWallet, please select an option")
         self.main_menu.set_prompt(">")
 
-    def add_card(self, card_type):
-        self.manager.add_card(card_type)
+    def get_card_options(self):
+        """
+        Go through all the CardEnum members, and generates
+        a tuple the UI can use to display the Card Types as
+        options for the user to select
+        :return: tuple of Card Types
+        """
+        cards_list = []
 
-    def get_cards(self):
+        for card in CardEnum:
+            card_tuple = (card.value, self.add_card,
+                          {'card_type': card.value})
+            cards_list.append(card_tuple)
+        cards_list.append(("Main Menu", Menu.CLOSE))
+
+        return cards_list
+
+    def add_card(self, card_type):
+        card = self.manager.get_card(card_type)
+        new_dict = card.__dict__
+        for attribute in card.__dict__:
+            new_dict[attribute] = \
+                input(f"Please input {attribute.replace('_', ' ')}:\n")
+
+        self.manager.add_card(card_type, **new_dict)
+
+        print(f"Card succesfully added\n")
+        input("Press Enter to return to the add menu...\n")
+
+    def list_cards(self):
         view_options = [("Main Menu", Menu.CLOSE)]
         for card in self.manager.cards:
-            view_options.append((card.name, self.print_card,
+            view_options.append((card.card_name, self.print_card,
                                         {'card': card}))
         self.view_cards.options = view_options
-
 
     def print_card(self, card):
         print("Card Details:\n")
         print(str(card))
+        input("Press Enter to return to main menu...\n")
 
     def search_card(self):
         card_name = input("Please input the name of the card"

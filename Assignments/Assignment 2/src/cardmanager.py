@@ -11,26 +11,38 @@ class CardManager:
     """
 
     types = {'Bank Card': BankCard, 'Punch Card': PunchCard,
-             'ID Card': IdCard, 'Membership Card': MembershipCard,
+             'School Card': SchoolCard, 'Government ID': GovID,
+             'Membership Card': MembershipCard,
              'Gift Card': GiftCard, 'Personal Card': PersonalCard,
              'Business Card': BusinessCard}
+
 
     def __init__(self):
         self.cards = []
 
-    def add_card(self, card_type):
+    def add_card(self, card_type, **kwargs):
+        new_card = self.types[card_type](**kwargs)
+        self.cards.append(new_card)
+        print(new_card)
+        # replace args with dictionary
+        #
+        #     new_card = self.types[card_type](*args)
+        # self.types[card_type].generate_card()
+        #     print(new_card)
+            #self.cards.append(new_card)
 
-        self.cards.append(self.types[card_type]())
+    def get_card(self, card_type):
+        return self.types[card_type]()
 
     def search_card(self, card_name):
         for card in self.cards:
-            if card.name == card_name:
+            if card.card_name == card_name:
                 return card
         return None
 
     def delete_card(self, card_name):
         for card in self.cards:
-            if card.name == card_name:
+            if card.card_name == card_name:
                 return True
         return False
 
