@@ -121,7 +121,7 @@ class UI:
         self.manager.export_cards()
 
     @staticmethod
-    def goodbye(self):
+    def goodbye():
         """
         Deals with a user who wants to exit the game
         """
