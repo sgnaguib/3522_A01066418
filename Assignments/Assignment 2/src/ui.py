@@ -65,12 +65,12 @@ class UI:
         card type and prompts the user to input information for
         these of the attributes"""
         card = self.manager.get_card(card_type)
-        new_dict = card.__dict__
+        attribute_dict = card.__dict__
         for attribute in card.__dict__:
-            new_dict[attribute] = \
+            attribute_dict[attribute] = \
                 input(f"Please input {attribute.replace('_', ' ')}:\n")
 
-        self.manager.add_card(card_type, **new_dict)
+        self.manager.add_card(card_type, **attribute_dict)
 
         print(f"Card succesfully added\n")
         input("Press Enter to return to the add menu...\n")
