@@ -27,64 +27,28 @@ class BookAnalyzer:
         """
         # read lines
         with open(src, mode='r', encoding='utf-8') as book_file:
-            self.text = book_file.readlines()
+            self.text = book_file.read()
 
-        #strip out empty lines
-        stripped_text = []
-        for line in self.text:
-            if line != "\n":
-                stripped_text.append(line)
-        self.text = stripped_text
+        for punctuation in self.COMMON_PUNCTUATION:
+            self.text = self.text.replace(punctuation, '')
 
-        # convert list of lines to list of words
-        words = []
-        for line in self.text:
-            words += line.split()
-        self.text = words
-
-        # remove common punctuation from words
-        temp_text = []
-        for word in self.text:
-            temp_word = word
-            for punctuation in self.COMMON_PUNCTUATION:
-                temp_word = temp_word.replace(punctuation, '')
-            temp_text.append(temp_word)
-        self.text = temp_text
-
-
-    @staticmethod
-    def is_unique(word, word_list):
-        """
-        Checks to see if the given word appears in the provided sequence.
-        This check is case in-sensitive.
-        :param word: a string
-        :param word_list: a sequence of words
-        :return: True if not found, false otherwise
-        """
-        lowercase_word = word.lower()
-        # this method makes up for over a half of total run time.
-        for a_word in word_list:
-            if lowercase_word == a_word.lower():
-                return False
-        return True
+        self.text = self.text.split()
 
     def find_unique_words(self):
         """
         Filters out all the words that only appear once in the text.
         :return: a list of all the unique words.
         """
-        temp_text = self.text
-        unique_words = []
-        non_unique_words = []
+        word_dict = {}
 
-        while temp_text:
-            word = temp_text.pop().lower()
-            if word in non_unique_words:
-                continue
-            if self.is_unique(word, temp_text):
-                unique_words.append(word)
+        for word in self.text:
+            lower_word = word.lower()
+            if lower_word not in word_dict:
+                word_dict[lower_word] = 1
             else:
-                non_unique_words.append(word)
+                word_dict[lower_word] = word_dict[lower_word] + 1
+
+        unique_words = [key for key, value in word_dict.items() if value == 1]
 
         return unique_words
 
