@@ -1,3 +1,9 @@
+"""
+This module contains all the basic pizza class and all its possible
+wrappers. A pizza has a price and a list of ingredients it contains.
+"""
+
+
 class Pizza:
     PRICE = 4.99
 

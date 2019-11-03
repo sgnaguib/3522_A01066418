@@ -2,8 +2,18 @@ from menu import Menu
 from pizza import *
 from prettytable import PrettyTable
 
+"""
+This module contains the UI for the pizza ordering system. 
+"""
+
 
 class UI:
+    """
+    This class contains all the menus and submenus a user would
+    navigate through as they construct their pizza. The menu
+    options are linked to functions that continually wrap
+    the pizza according to the user's selection choices.
+    """
 
     cheese_dict = {'Parmigiano Reggiano': ParmigianoPizza,
                    'Fresh Mozzarella': MozzarellaPizza,
@@ -22,8 +32,10 @@ class UI:
 
     def __init__(self):
 
+        # Instantiating Basic Pizza
         self.pizza = Pizza()
 
+        # Topping Menu
         topping_options = []
         for element in self.topping_dict.items():
             topping_options.append((f"{element[0]} | "
@@ -36,9 +48,9 @@ class UI:
             options=topping_options,
             title="Step 2:",
             message="Choose a Topping Or Continue to Check Out!")
-
         self.topping_menu.set_prompt(">")
 
+        # Cheese Menu
         cheese_options = []
         for element in self.cheese_dict.items():
             cheese_options.append((f"{element[0]} | "
@@ -69,6 +81,9 @@ class UI:
         print("\n")
 
     def checkout(self):
+        """
+        Prints the user's bill and exits the program.
+        """
         print("Here is your bill:\n")
         bill = PrettyTable(['Ingredient', 'Cost'])
         for ingredient in self.pizza.ingredients:
@@ -79,8 +94,10 @@ class UI:
         input("Press Enter to Exit Program")
         quit()
 
-
     def run(self):
+        """
+        Greets the user and opens the main menu
+        """
         print("Welcome to the Python Pizza Company. \nWhere we"
               " let you build your own custom dream pizza.")
         print("All are pizzas are assembled on our signature crust "
