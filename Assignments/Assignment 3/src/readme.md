@@ -13,4 +13,10 @@ When the user opts to checkout, a list is printed of the ingredient
 list of the resulting pizza, alongside the price of each ingredient,
 which is fetched from class corresponding to that ingredient.
 
+This program uses two external modules: pretty table and menu.
+
+In the run configuration, 
+TERM variable TERM needs to be added and set to xterm-color 
+to remove TERM variable error message.
+
 As far as I know, all the required functionalities work properly.
