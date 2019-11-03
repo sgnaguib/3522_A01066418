@@ -10,12 +10,15 @@ class UI:
                    'Vegan Cheese': VeganCheesePizza}
 
     topping_dict = {'Peppers': PeppersPizza,
-                   'Pineapple': PineapplePizza,
+                   'Pineapples': PineapplePizza,
                    'Mushrooms': MushroomsPizza,
                    'Fresh Basil': BasilPizza,
                    'Spinach': SpinachPizza,
                    'Pepperoni':PepperoniPizza,
                    'Beyond Meat':BeyondPizza}
+
+    ingredient_dict = {**cheese_dict, **topping_dict,
+                       'Signature Crust': Pizza}
 
     def __init__(self):
 
@@ -23,31 +26,31 @@ class UI:
 
         topping_options = []
         for element in self.topping_dict.items():
-            topping_options.append((element[0], self.add_topping,
+            topping_options.append((f"{element[0]} | "
+                                    f"${element[1].PRICE}",
+                                    self.add_topping,
                                    {'kind': element[1]}))
-        topping_options.append(("Check Out", self.checkout()))
-
+        topping_options.append(("Check Out", self.checkout))
 
         self.topping_menu = Menu(
             options=topping_options,
             title="Step 2:",
-            message="Select Your Toppings!")
+            message="Choose a Topping Or Continue to Check Out!")
 
         self.topping_menu.set_prompt(">")
 
         cheese_options = []
         for element in self.cheese_dict.items():
-            cheese_options.append((element[0], self.add_cheese,
+            cheese_options.append((f"{element[0]} | "
+                                   f"${element[1].PRICE}",
+                                   self.add_cheese,
                                    {'kind': element[1]}))
         cheese_options.append(("Topping Menu", self.topping_menu.open))
 
         self.cheese_menu = Menu(
             options=cheese_options,
             title="Step 1:",
-            refresh=lambda:
-            self.cheese_menu.set_message("Choose Another Cheese Or "
-                                         "Continue to Topping Menu"),
-            message="Select Your Cheese!")
+            message="Choose a Cheese Or Continue To Toppings")
 
     def add_cheese(self, kind):
         self.pizza = kind(self.pizza)
@@ -69,19 +72,15 @@ class UI:
         print("Here is your bill:\n")
         bill = PrettyTable(['Ingredient', 'Cost'])
         for ingredient in self.pizza.ingredients:
-            bill.add_row([ingredient, self.get_cost(ingredient)])
+            bill.add_row([ingredient,
+                          self.ingredient_dict[ingredient].PRICE])
         bill.add_row(['Total', self.pizza.cost])
         print(bill)
         input("Press Enter to Exit Program")
         quit()
 
-    def get_cost(self, ingredient):
-
-        prices = {'Signature Crust': 4.99, 'Parmigiano Reggiano': 4.99}
-        return prices[ingredient]
 
     def run(self):
-
         print("Welcome to the Python Pizza Company. \nWhere we"
               " let you build your own custom dream pizza.")
         print("All are pizzas are assembled on our signature crust "
