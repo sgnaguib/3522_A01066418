@@ -19,7 +19,7 @@ class Library:
         Adds a book to the library's collection if the collection
         doesn't already contain the book
         """
-        self.myCatalogue.add_item(kind)
+        return self.myCatalogue.add_item(kind)
 
     def remove_item(self, call_number):
         """
@@ -64,7 +64,7 @@ class Library:
         """
         Prints out the list of available items and their details
         """
-        return self.myCatalogue.item_list()
+        return self.myCatalogue.item_list
 
 
 class UI:
@@ -73,17 +73,18 @@ class UI:
 
         self.library = library
 
-        add_options = [("DVD", self.add_item, {'kind': "DVD"}),
+        self.add_options = [("DVD", self.add_item, {'kind': "DVD"}),
                        ("Journal", self.add_item, {'kind': "Journal"}),
-                       ("Book", self.add_item, {'kind': "Book"})]
+                       ("Book", self.add_item, {'kind': "Book"}),
+                       ("Main Menu", Menu.CLOSE)]
 
         self.add_menu = Menu(
-            options=add_options,
+            options=self.add_options,
             title="Add Menu",
             message="Select the kind of item you'd like to add")
         self.add_menu.set_prompt(">")
 
-        mm_options = [("Remove item by call number", self.remove_item),
+        self.mm_options = [("Remove item by call number", self.remove_item),
                       ("Check out item by call number", self.check_out),
                       ("Return item by call number", self.search_item),
                       ("Search for item by title", self.find_item),
@@ -92,7 +93,7 @@ class UI:
                       ("Exit Program", self.goodbye)]
 
         self.main_menu = Menu(
-            options=mm_options,
+            options=self.mm_options,
             title="Main Menu",
             message="Welcome to iLibrary, please select an option")
         self.main_menu.set_prompt(">")
@@ -123,7 +124,7 @@ class UI:
         if item is None:
             print("Item could not be added\n")
         else:
-            print(f"{item} successfully added\n")
+            print(f"{item.title} successfully added\n")
 
     @staticmethod
     def goodbye():
