@@ -60,11 +60,11 @@ class Library:
         """
         return self.myCatalogue.find_item(title)
 
-    def display_available_items(self):
+    def get_available_items(self):
         """
         Prints out the list of available items and their details
         """
-        return self.myCatalogue.display_available_items()
+        return self.myCatalogue.item_list()
 
 
 class UI:
@@ -104,7 +104,9 @@ class UI:
         print(self.library.find_item(next_input))
 
     def display_items(self):
-        self.library.display_available_items()
+        item_list = self.library.get_available_items()
+        for item in item_list:
+            print(item)
 
     def add_item(self):
         self.library.add_item()
