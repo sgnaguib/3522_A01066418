@@ -10,7 +10,9 @@ class Catalogue:
         """
         Creates a new catalogue with an empty list of items
         """
-        self.item_list = []
+        self._item_list = []
+
+        self.item_list = property()
 
     def find_item(self, title):
         """
@@ -80,9 +82,4 @@ class Catalogue:
                 return "item successfully returned"
         return "item could not be found"
 
-    def display_available_items(self):
-        """
-        Prints out the list of available items and their details
-        """
-        for element in self.item_list:
-            print(element)
+

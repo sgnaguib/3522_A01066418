@@ -2,7 +2,6 @@ from catalogue import Catalogue
 from menu import Menu
 
 
-
 class Library:
     """
     Represent a library that has a collection of items.
@@ -109,7 +108,6 @@ class UI:
 
     def add_item(self):
         self.library.add_item()
-
 
     @staticmethod
     def goodbye():
