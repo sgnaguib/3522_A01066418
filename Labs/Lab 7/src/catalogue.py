@@ -10,9 +10,11 @@ class Catalogue:
         """
         Creates a new catalogue with an empty list of items
         """
-        self._item_list = []
+        self.item_list = []
 
-        self.item_list = property()
+    @property
+    def get_item_list(self):
+        return self.item_list
 
     def find_item(self, title):
         """
@@ -26,17 +28,20 @@ class Catalogue:
             if element.title == title:
                 return element
 
-        print("item could not be found")
+        return "item could not be found"
 
-    def add_item(self):
+    def add_item(self, kind):
         """
         Adds a item to the library's collection if the collection
         doesn't already contain the item
         """
-        item = LibraryItemGenerator.gen_item()
+        item = LibraryItemGenerator.gen_item(kind)
 
         if item not in self.item_list:
             self.item_list.append(item)
+            return item
+        else:
+            return None
 
     def remove_item(self, call_number):
         """

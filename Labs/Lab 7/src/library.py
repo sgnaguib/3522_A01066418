@@ -14,12 +14,12 @@ class Library:
         """
         self.myCatalogue = Catalogue()
 
-    def add_item(self):
+    def add_item(self, kind):
         """
         Adds a book to the library's collection if the collection
         doesn't already contain the book
         """
-        self.myCatalogue.add_item()
+        self.myCatalogue.add_item(kind)
 
     def remove_item(self, call_number):
         """
@@ -73,12 +73,22 @@ class UI:
 
         self.library = library
 
+        add_options = [("DVD", self.add_item, {'kind': "DVD"}),
+                       ("Journal", self.add_item, {'kind': "Journal"}),
+                       ("Book", self.add_item, {'kind': "Book"})]
+
+        self.add_menu = Menu(
+            options=add_options,
+            title="Add Menu",
+            message="Select the kind of item you'd like to add")
+        self.add_menu.set_prompt(">")
+
         mm_options = [("Remove item by call number", self.remove_item),
                       ("Check out item by call number", self.check_out),
                       ("Return item by call number", self.search_item),
                       ("Search for item by title", self.find_item),
                       ("Display library catalogue", self.display_items),
-                      ("Add item to catalogue", self.add_item),
+                      ("Add item to catalogue", self.add_menu.open),
                       ("Exit Program", self.goodbye)]
 
         self.main_menu = Menu(
@@ -108,8 +118,12 @@ class UI:
         for item in item_list:
             print(item)
 
-    def add_item(self):
-        self.library.add_item()
+    def add_item(self, kind):
+        item = self.library.add_item(kind)
+        if item is None:
+            print("Item could not be added\n")
+        else:
+            print(f"{item} successfully added\n")
 
     @staticmethod
     def goodbye():
