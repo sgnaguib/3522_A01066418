@@ -32,8 +32,8 @@ class ItemFactory(abc.ABC):
     The UserFactory class is the base class that the rest of the system
     depends on. It defines a factory interface that creates a user.
     """
-
-    def get_input(self):
+    @staticmethod
+    def get_input():
         title = input("input title\n")
         call_num = input("input call number\n")
         not_integer = True

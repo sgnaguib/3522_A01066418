@@ -28,7 +28,7 @@ class Library:
         :return: Message telling user whether book was successfully
         deleted
         """
-        return self.myCatalogue.check_out(call_number)
+        return self.myCatalogue.remove_item(call_number)
 
     def check_out(self, call_number):
         """
