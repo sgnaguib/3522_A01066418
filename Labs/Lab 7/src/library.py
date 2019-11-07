@@ -117,7 +117,7 @@ class UI:
     def display_items(self):
         item_list = self.library.get_available_items()
         for item in item_list:
-            print(item)
+            print(f"{item}\n")
 
     def add_item(self, kind):
         item = self.library.add_item(kind)

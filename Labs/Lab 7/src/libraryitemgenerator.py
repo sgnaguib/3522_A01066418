@@ -33,6 +33,21 @@ class ItemFactory(abc.ABC):
     depends on. It defines a factory interface that creates a user.
     """
 
+    def get_input(self):
+        title = input("input title\n")
+        call_num = input("input call number\n")
+        not_integer = True
+        while not_integer:
+            try:
+                num_copies = int(input("input number of copies\n"))
+            except ValueError:
+                print("Error! You must enter an integer")
+            else:
+                not_integer = False
+
+        return {'title': title,
+                'call_num': call_num, 'num_copies': num_copies}
+
     @abc.abstractmethod
     def create_item(self) -> Item:
         pass
@@ -44,12 +59,10 @@ class BookFactory(ItemFactory):
     """
 
     def create_item(self) -> Book:
-        title = input("input book title\n")
-        call_num = input("input book call number\n")
-        num_copies = input("input number of copies\n")
         author = input("input author\n")
+        kwargs = self.get_input()
 
-        return Book(title, call_num, int(num_copies), author)
+        return Book(author, **kwargs)
 
 
 class JournalFactory(ItemFactory):
@@ -58,14 +71,12 @@ class JournalFactory(ItemFactory):
     """
 
     def create_item(self) -> Journal:
-        title = input("input journal title\n")
-        call_num = input("input journal call number\n")
-        num_copies = input("input number of copies\n")
+        kwargs = self.get_input()
         issue_num = input("input issue number\n")
         publisher = input("input publisher\n")
 
-        return Journal(title, call_num, int(num_copies), issue_num,
-                       publisher)
+        return Journal(issue_num,
+                       publisher, **kwargs)
 
 
 class DVDFactory(ItemFactory):
@@ -73,12 +84,10 @@ class DVDFactory(ItemFactory):
     The JournalFactory is responsible for creating Journal Items
     """
     def create_item(self) -> DVD:
-        title = input("input dvd title\n")
-        call_num = input("input dvd call number\n")
-        num_copies = input("input number of copies\n")
+        kwargs = self.get_input()
         release_date = input("input release date\n")
         region_code = input("input region code\n")
 
-        return DVD(title, call_num, int(num_copies), release_date,
-                   region_code)
+        return DVD(release_date,
+                   region_code, **kwargs)
 

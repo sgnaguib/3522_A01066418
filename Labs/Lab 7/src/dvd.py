@@ -6,9 +6,9 @@ class DVD(item.Item):
     Represents a library's DVD
     """
 
-    def __init__(self, title, call_number, num_copies, release_date,
-                 region_code):
-        super().__init__(title, call_number, num_copies)
+    def __init__(self, release_date,
+                 region_code, **kwargs):
+        super().__init__(**kwargs)
         self.release_date = release_date
         self.region_code = region_code
 

@@ -6,8 +6,8 @@ class Book(item.Item):
     Represents a library book that can be check out.
     """
 
-    def __init__(self, title, call_number, num_copies, author):
-        super().__init__(title, call_number, num_copies)
+    def __init__(self, author, **kwargs):
+        super().__init__(**kwargs)
         self.author = author
 
     def __str__(self):

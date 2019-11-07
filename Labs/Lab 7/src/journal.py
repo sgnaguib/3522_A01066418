@@ -5,9 +5,9 @@ class Journal(item.Item):
     Represents a library journal
     """
 
-    def __init__(self, title, call_number, num_copies, issue_num,
-                 publisher):
-        super().__init__(title, call_number, num_copies)
+    def __init__(self, issue_num,
+                 publisher, **kwargs):
+        super().__init__(**kwargs)
         self.issue_num = issue_num
         self.publisher = publisher
 

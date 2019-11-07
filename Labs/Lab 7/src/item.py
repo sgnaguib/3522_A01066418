@@ -6,9 +6,9 @@ class Item(abc.ABC):
     Represents a library item
     """
 
-    def __init__(self, title, call_number, num_copies):
+    def __init__(self, title, call_num, num_copies):
         self.title = title
-        self.call_number = call_number
+        self.call_number = call_num
         self.num_copies = num_copies
 
     def check_availability(self):
