@@ -91,11 +91,18 @@ def setup_request_commandline() -> Request:
 class Crypto:
 
     def __init__(self):
-        self.encryption_start_handler = None
+        self.encryption_start_handler = EncryptKeyHandler()
         self.decryption_start_handler = None
 
+        # Setting up encryption chain
+        self.encryption_start_handler.set_handler(EncryptInputHandler())
+        self.encryption_start_handler.set_handler(EncryptOutputHandler())
+
     def execute_request(self, request: Request):
-        pass
+        if request.encryption_state == CryptoMode.DE:
+            pass
+        else:
+            self.encryption_start_handler.handle_request(request)
 
 
 class BaseEncryptionHandler(abc.ABC):
@@ -121,36 +128,20 @@ class BaseEncryptionHandler(abc.ABC):
         """
         self.next_handler = handler
 
-class KeyHandler(BaseEncryptionHandler):
+
+class EncryptKeyHandler(BaseEncryptionHandler):
 
     def handle_request(self, request: Request):
-
         if len(request.key) is 8 or 16 or 24:
             if not self.next_handler:
                 return "", True
-            return self.next_handler.handle_request(request)
+            else:
+                return self.next_handler.handle_request(request)
         else:
             return "Invalid key length", False
 
-# class StringHanlder(BaseEncryptionHandler):
-#
-#     def handle_request(self, request: Request):
-#
-#         byte_string = request.key.encode("utf-8")
-#         d_key = DesKey(byte_string)
-#         if request.data_input:
-#             request.result = d_key.encrypt(request.data_input)
-#             if not self.next_handler:
-#                 return "", True
-#             return self.next_handler.handle_request(request)
-#         else:
-#             if not request.input_file:
-#                 return "No input was given", False
 
-
-
-
-class InputHandler(BaseEncryptionHandler):
+class EncryptInputHandler(BaseEncryptionHandler):
 
     def handle_request(self, request: Request):
 
@@ -165,18 +156,52 @@ class InputHandler(BaseEncryptionHandler):
         if request.data_input:
             request.result = d_key.encrypt(request.data_input.encode("utf-8"),
                                            padding=True)
+            print(request.result)
             if not self.next_handler:
                 return "", True
             return self.next_handler.handle_request(request)
 
         if request.input_file:
-            #open input file and encrypt it
-            pass
+            # open input file and encrypt it
+            with open(request.input_file, 'r') as file:
+                data = file.read().replace('\n', '')
 
+            request.result = d_key.encrypt(
+                data.encode("utf-8"),
+                padding=True)
+            print(request.result)
+            if not self.next_handler:
+                return "", True
+            return self.next_handler.handle_request(request)
+
+
+class EncryptOutputHandler(BaseEncryptionHandler):
+
+    def handle_request(self, request: Request):
+
+        if not request.output or request == 'print':
+            # if there's no output specified or if the output is print,
+            # then print to console
+            print(request.result)
+            if not self.next_handler:
+                return "", True
+            else:
+                return self.next_handler.handle_request(request)
+        else:
+            try:
+                with open(request.output, 'w') as file:
+                    file.write(request.result)
+                if not self.next_handler:
+                    return "", True
+                else:
+                    return self.next_handler.handle_request(request)
+            except:
+                return "Invalid file type provided", False
 
 
 def main(request: Request):
-    pass
+    c = Crypto()
+    c.execute_request(request)
 
 
 if __name__ == '__main__':
