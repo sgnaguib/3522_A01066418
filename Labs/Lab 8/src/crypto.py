@@ -194,9 +194,8 @@ class EncryptOutputHandler(BaseEncryptionHandler):
                 return self.next_handler.handle_request(request)
         else:
             try:
-                with open(request.output, "w") as file:
-                    print(request.result)
-                    file.write(str(request.result))
+                with open(request.output, "wb") as file:
+                    file.write(request.result)
                 if not self.next_handler:
                     return "", True
                 else:
@@ -258,23 +257,18 @@ class DecryptInputHandler(BaseDecryptionHandler):
             try:
                 data = r"{0}".format(request.data_input)
                 data = ast.literal_eval(data)
-                request.result = d_key.decrypt(data, padding=True)
+                request.result = d_key.decrypt(data, padding=True).decode('utf-8')
             except:
-                return "Unable to decrypt. Invalid Input length", False
+                return "Unable to decrypt. Invalid Input.", False
 
         if request.input_file:
             # open input file and encrypt it
             try:
-                with open(request.input_file, mode='r',
-                          encoding='utf-8') as decrypt_file:
+                with open(request.input_file, mode='rb') as decrypt_file:
                     data = decrypt_file.read()
-                    data = r"{0}".format(data)
-                    # this will give us an object of type byte
-                    # that we can now use to decrypt
-                    data = ast.literal_eval(data)
                     request.result = d_key.decrypt(data, padding=True)
             except:
-                return "Unable to decrypt. Invalid Input length", False
+                return "Unable to decrypt. Invalid Input.", False
 
         if not self.next_handler:
             return "", True
