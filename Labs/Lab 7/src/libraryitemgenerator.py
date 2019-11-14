@@ -1,3 +1,5 @@
+from builtins import classmethod, staticmethod, input, ValueError, int
+
 from dvd import DVD
 from book import Book
 from journal import Journal

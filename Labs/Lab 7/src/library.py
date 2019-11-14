@@ -131,7 +131,7 @@ class UI:
         """
         Deals with a user who wants to exit the game
         """
-        print("\nThanks for using iWallet. Goodbye!")
+        print("\nThanks for using iLibrary. Goodbye!")
         quit()
 
     def run(self):
