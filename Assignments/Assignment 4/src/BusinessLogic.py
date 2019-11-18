@@ -1,6 +1,6 @@
 from pathlib import Path
 import pandas as pd
-
+from GarmentFactory import *
 
 
 class Order:
@@ -9,7 +9,28 @@ class Order:
     """
     def __init__(self, factory, order_details):
         self.factory = factory
-        self.order_number = order_details
+        self.details = order_details
+        self.kw_details = {'style': self.details['Style name'],
+                           'size': self.details['Size'],
+                           'colour': self.details['Colour'],
+                           'textile': self.details['Textile'],
+                           'sport': self.details['Sport'],
+                           'number_pockets': self.details['Hidden Zipper Pockets'],
+                           'indoor_outdoor_type': self.details['Indoor/Outdoor'],
+                           'requires_iron': self.details['Requires Ironing'],
+                           'number_buttons': self.details['Buttons'],
+                           'contains_silver': self.details['Silver'],
+                           'contrast_colour': self.details['Stripe'],
+                           'requires_dry_cleaning': self.details['Dry Cleaning'],
+                           'is_articulated': self.details['Articulated'],
+                           'length': self.details['Length']
+
+    }
+
+
+
+
+
 
 
 class OrderProcessor:
@@ -18,6 +39,10 @@ class OrderProcessor:
     and orders spreadsheet and extract its orders one at a time
 
     """
+    factory_dict = {'Lululime': LuluLimeFactory(),
+                    'PineappleRepublic': PineappleRepublicFactory(),
+                    'Nika': NikaFactory()}
+
     def __init__(self):
         self.df = None
         self.order_iter = None
@@ -26,23 +51,18 @@ class OrderProcessor:
         file = Path(path)
         self.df = pd.read_excel(file)
         self.order_iter = self.df.iterrows()
-        # for order in self.order_iter:
-        #     print(order)
-
-        # print(orders_iter.__next__())
 
     def process_next_order(self):
-
         next_order = next(self.order_iter)
-
         order_details = next_order[1]
 
-        print(order_details['Brand'])
+        brand_factory = self.factory_dict[order_details['Brand']]
 
-        return_order = Order()
+        details_dict = order_details.to_dict()
 
-        return order_details
-        # print(self.next_order())
+        order = Order(brand_factory, details_dict)
+
+        return order
 
 
 class GarmentMaker:
@@ -57,13 +77,29 @@ class GarmentMaker:
     def open_order_sheet(self, path):
         self.processor.open_order_sheet(path)
 
-    def process_orders(self):
+    def get_orders(self):
         orders_left = True
         while orders_left:
             try:
-                print(self.processor.process_next_order())
+                order = self.processor.process_next_order()
+                self.process_order(order)
             except StopIteration:
                 orders_left = False
+
+    def process_order(self, order):
+
+        factory = order.factory
+        product_details = order.details
+        garment_type = product_details['Garment']
+
+        product_dict = {'ShirtMen': factory.create_shirt_men,
+                        'ShirtWomen': factory.create_shirt_women,
+                        'SockPairUnisex': factory.create_socks_unisex}
+
+        print(product_details)
+        # product_dict[garment_type](**product_details)
+
+
 
 
 def main():
@@ -76,7 +112,7 @@ def main():
 
     g_maker.open_order_sheet(path)
 
-    g_maker.process_orders()
+    g_maker.get_orders()
 
 
 if __name__ == '__main__':

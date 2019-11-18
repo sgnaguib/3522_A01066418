@@ -49,9 +49,9 @@ class ShirtMenLuluLime(ShirtMen):
     MerPerson is a type of Friendly usually found in the Aquatica World.
     """
 
-    def __init__(self, design, number_pockets, **kwargs):
+    def __init__(self, sport, number_pockets, **kwargs):
         super().__init__(**kwargs)
-        self.design = design
+        self.sport = sport
         self.number_pockets = number_pockets
 
 
@@ -97,9 +97,9 @@ class ShirtWomenLuluLime(ShirtWomen):
     MerPerson is a type of Friendly usually found in the Aquatica World.
     """
 
-    def __init__(self, design, number_pockets, **kwargs):
+    def __init__(self, sport, number_pockets, **kwargs):
         super().__init__(**kwargs)
-        self.design = design
+        self.sport = sport
         self.number_pockets = number_pockets
 
 
@@ -161,6 +161,7 @@ class SockPairUnisexPineappleRepublic(SockPairUnisex):
         super().__init__(**kwargs)
         self.requires_dry_cleaning = requires_dry_cleaning
 
+
 class SockPairUnisexNika(SockPairUnisex):
     """
     FireSprite is a type of Friendly usually found in the Firelands
@@ -182,15 +183,15 @@ class BrandFactory(abc.ABC):
     """
 
     @abc.abstractmethod
-    def create_shirt_men(self) -> ShirtMen:
+    def create_shirt_men(self, **kwargs) -> ShirtMen:
         pass
 
     @abc.abstractmethod
-    def create_shirt_women(self) -> ShirtWomen:
+    def create_shirt_women(self, **kwargs) -> ShirtWomen:
         pass
 
     @abc.abstractmethod
-    def create_socks_unisex(self) -> SockPairUnisex:
+    def create_socks_unisex(self, **kwargs) -> SockPairUnisex:
         pass
 
 
@@ -201,14 +202,14 @@ class LuluLimeFactory(BrandFactory):
     Jellyfish.
     """
 
-    def create_shirt_men(self) -> ShirtMen:
-        return ShirtMenLuluLime()
+    def create_shirt_men(self, **kwargs) -> ShirtMen:
+        return ShirtMenLuluLime(**kwargs)
 
-    def create_shirt_women(self) -> ShirtWomen:
-        return ShirtWomenLuluLime()
+    def create_shirt_women(self, **kwargs) -> ShirtWomen:
+        return ShirtWomenLuluLime(**kwargs)
 
-    def create_socks_unisex(self) -> SockPairUnisex:
-        return SockPairUnisexLuluLime()
+    def create_socks_unisex(self, **kwargs) -> SockPairUnisex:
+        return SockPairUnisexLuluLime(**kwargs)
 
 
 class PineappleRepublicFactory(BrandFactory):
@@ -218,14 +219,14 @@ class PineappleRepublicFactory(BrandFactory):
     Fireflies
     """
 
-    def create_shirt_men(self) -> ShirtMen:
-        return ShirtMenPineappleRepublic()
+    def create_shirt_men(self, **kwargs) -> ShirtMen:
+        return ShirtMenPineappleRepublic(**kwargs)
 
-    def create_shirt_women(self) -> ShirtWomen:
-        return ShirtWomenPineappleRepublic()
+    def create_shirt_women(self, **kwargs) -> ShirtWomen:
+        return ShirtWomenPineappleRepublic(**kwargs)
 
-    def create_socks_unisex(self) -> SockPairUnisex:
-        return SockPairUnisexPineappleRepublic()
+    def create_socks_unisex(self, **kwargs) -> SockPairUnisex:
+        return SockPairUnisexPineappleRepublic(**kwargs)
 
 
 class NikaFactory(BrandFactory):
@@ -235,91 +236,17 @@ class NikaFactory(BrandFactory):
     Fireflies
     """
 
-    def create_shirt_men(self) -> ShirtMen:
-        return ShirtMenNika()
+    def create_shirt_men(self, **kwargs) -> ShirtMen:
+        return ShirtMenNika(**kwargs)
 
-    def create_shirt_women(self) -> ShirtWomen:
-        return ShirtWomenNika()
+    def create_shirt_women(self, **kwargs) -> ShirtWomen:
+        return ShirtWomenNika(**kwargs)
 
-    def create_socks_unisex(self) -> SockPairUnisex:
-        return SockPairUnisexNika()
-
-
-class WorldPopulator:
-    """
-    Maintains a mapping of world -> CharacterFactory. The WorldPopulator
-    is responsible for retrieving the right factory for the specified
-    world.
-    """
-
-    # Maps world types to their respective factories
-    world_factory_mapper = {
-        WorldEnum.AQUATICA : AquaticaCharacterFactory,
-        WorldEnum.FIRELANDS : FirelandsCharacterFactory
-    }
-
-    def get_factory(self, world_type: WorldEnum) -> CharacterFactory:
-        """
-        Retrieves the associated factory for the specified WorldEnum
-        :param world_type: WorldEnum
-        :return: a CharacterFactory if found, None otherwise
-        """
-        factory_class = self.world_factory_mapper.get(world_type, None)
-        return factory_class()
+    def create_socks_unisex(self, **kwargs) -> SockPairUnisex:
+        return SockPairUnisexNika(**kwargs)
 
 
-class World:
-    """
-    Defines a world that consists of fFriendlies, Enemies and Animals.
-    Each world has a theme/variety.
-    """
 
-    def __init__(self, char_factory: CharacterFactory):
-        """
-        Instantiates a world with the specified character factory. The
-        Character Factory specifies which type of characters inhabit
-        this world.
-        :param char_factory: a Character Factory
-        """
-        self.friendlies = []
-        self.enemies = []
-        self.animals = []
-        self.world_populator_factory = char_factory
-
-        for i in range(5):
-            self.friendlies.append(self.world_populator_factory.create_friendly())
-
-        for i in range(5):
-            self.enemies.append(self.world_populator_factory.create_enemy())
-
-        for i in range(5):
-            self.animals.append(self.world_populator_factory.create_animal())
-
-    def simulate(self):
-        """
-        Simulates behaviour of all the characters in this world.
-        :return:
-        """
-        for friendly in self.friendlies:
-            friendly.talk()
-
-        for enemy in self.enemies:
-            print(f"{enemy.name} tried to defend! Success: "
-                  f"{enemy.defend()}")
-
-        for animal in self.animals:
-            animal.move()
-
-
-def main():
-    populator = WorldPopulator()
-    aquatica_factory = populator.get_factory(WorldEnum.AQUATICA)
-    aquatica = World(aquatica_factory)
-    aquatica.simulate()
-
-
-if __name__ == '__main__':
-    main()
 
 
 
