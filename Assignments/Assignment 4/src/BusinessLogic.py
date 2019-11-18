@@ -10,6 +10,8 @@ class Order:
     def __init__(self, factory, order_details):
         self.factory = factory
         self.details = order_details
+        self.garment_type = self.details['Garment']
+        self.count = self.details['Count']
         self.kw_details = {'style': self.details['Style name'],
                            'size': self.details['Size'],
                            'colour': self.details['Colour'],
@@ -23,14 +25,10 @@ class Order:
                            'contrast_colour': self.details['Stripe'],
                            'requires_dry_cleaning': self.details['Dry Cleaning'],
                            'is_articulated': self.details['Articulated'],
-                           'length': self.details['Length']
+                           'length': self.details['Length'],
+                           'garment_type': self.details['Garment']
 
     }
-
-
-
-
-
 
 
 class OrderProcessor:
@@ -82,23 +80,34 @@ class GarmentMaker:
         while orders_left:
             try:
                 order = self.processor.process_next_order()
-                self.process_order(order)
+                garment = self.create_garment(order)
+                self.add_garment(garment)
+                #add to report
             except StopIteration:
                 orders_left = False
 
-    def process_order(self, order):
+    def create_garment(self, order):
 
         factory = order.factory
-        product_details = order.details
-        garment_type = product_details['Garment']
 
         product_dict = {'ShirtMen': factory.create_shirt_men,
                         'ShirtWomen': factory.create_shirt_women,
                         'SockPairUnisex': factory.create_socks_unisex}
 
-        print(product_details)
-        # product_dict[garment_type](**product_details)
+        garment = product_dict[order.garment_type](**order.kw_details)
 
+        return garment
+
+    def add_garment(self, garment):
+
+        garment_dict = {'ShirtMen': self.shirts_men,
+                        'ShirtWomen': self.shirts_women,
+                        'SockPairUnisex':
+                            self.socks_unisex}
+        garment_dict[garment.garment_type].append(garment)
+
+    def add_to_report(self):
+        pass
 
 
 

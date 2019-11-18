@@ -37,11 +37,13 @@ class ShirtMen(abc.ABC):
     abstract factory pattern is responsible to create.
     """
     @abc.abstractmethod
-    def __init__(self, style, size, colour, textile):
+    def __init__(self, style, size, colour, textile, garment_type,
+                 **kwargs):
         self.style = style
         self.size = size
         self.colour = colour
         self.textile = textile
+        self.garment_type = garment_type
 
 
 class ShirtMenLuluLime(ShirtMen):
@@ -85,11 +87,13 @@ class ShirtWomen(abc.ABC):
     """
 
     @abc.abstractmethod
-    def __init__(self, style, size, colour, textile):
+    def __init__(self, style, size, colour, textile, garment_type,
+                 **kwargs):
         self.style = style
         self.size = size
         self.colour = colour
         self.textile = textile
+        self.garment_type = garment_type
 
 
 class ShirtWomenLuluLime(ShirtWomen):
@@ -133,11 +137,13 @@ class SockPairUnisex(abc.ABC):
     """
 
     @abc.abstractmethod
-    def __init__(self, style, size, colour, textile):
+    def __init__(self, style, size, colour, textile, garment_type,
+                 **kwargs):
         self.style = style
         self.size = size
         self.colour = colour
         self.textile = textile
+        self.garment_type = garment_type
 
 
 class SockPairUnisexLuluLime(SockPairUnisex):
