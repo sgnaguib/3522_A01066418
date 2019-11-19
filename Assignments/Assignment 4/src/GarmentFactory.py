@@ -45,6 +45,10 @@ class ShirtMen(abc.ABC):
         self.textile = textile
         self.garment_type = garment_type
 
+    def __str__(self):
+        return f"Size: {self.size}, Colour: {self.colour}, " \
+               f"Textile: {self.textile}, Serial #: {id(self)}"
+
 
 class ShirtMenLuluLime(ShirtMen):
     """
@@ -95,6 +99,10 @@ class ShirtWomen(abc.ABC):
         self.textile = textile
         self.garment_type = garment_type
 
+    def __str__(self):
+        return f"Size: {self.size}, Colour: {self.colour}, " \
+               f"Textile: {self.textile}, Serial #: {id(self)}"
+
 
 class ShirtWomenLuluLime(ShirtWomen):
     """
@@ -144,6 +152,10 @@ class SockPairUnisex(abc.ABC):
         self.colour = colour
         self.textile = textile
         self.garment_type = garment_type
+
+    def __str__(self):
+        return f"Size: {self.size}, Colour: {self.colour}, " \
+               f"Textile: {self.textile}, Serial #: {id(self)}"
 
 
 class SockPairUnisexLuluLime(SockPairUnisex):

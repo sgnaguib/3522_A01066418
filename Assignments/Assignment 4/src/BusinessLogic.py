@@ -12,6 +12,7 @@ class Order:
         self.details = order_details
         self.garment_type = self.details['Garment']
         self.count = self.details['Count']
+        self.brand = self.details['Brand']
         self.kw_details = {'style': self.details['Style name'],
                            'size': self.details['Size'],
                            'colour': self.details['Colour'],
@@ -47,8 +48,14 @@ class OrderProcessor:
 
     def open_order_sheet(self, path):
         file = Path(path)
-        self.df = pd.read_excel(file)
-        self.order_iter = self.df.iterrows()
+        try:
+            self.df = pd.read_excel(file)
+        except FileNotFoundError:
+            print("No such file exists in this directory")
+            return False
+        else:
+            self.order_iter = self.df.iterrows()
+            return True
 
     def process_next_order(self):
         next_order = next(self.order_iter)
@@ -70,23 +77,27 @@ class GarmentMaker:
         self.shirts_women = []
         self.socks_unisex = []
 
+        self.report = []
+
         self.processor = OrderProcessor()
 
     def open_order_sheet(self, path):
         self.processor.open_order_sheet(path)
 
-    def get_orders(self):
+    def process_orders(self):
         orders_left = True
         while orders_left:
             try:
                 order = self.processor.process_next_order()
-                garment = self.create_garment(order)
-                self.add_garment(garment)
-                #add to report
             except StopIteration:
                 orders_left = False
+            else:
+                garments = self.create_garments(order, order.count)
+                self.add_garments(garments, order.garment_type)
+                self.add_to_report(order.brand, order.garment_type,
+                                   garments)
 
-    def create_garment(self, order):
+    def create_garments(self, order, count):
 
         factory = order.factory
 
@@ -94,34 +105,60 @@ class GarmentMaker:
                         'ShirtWomen': factory.create_shirt_women,
                         'SockPairUnisex': factory.create_socks_unisex}
 
-        garment = product_dict[order.garment_type](**order.kw_details)
+        garments = []
+        for i in range(0, count):
+            garment = product_dict[order.garment_type](**order.kw_details)
+            garments.append(garment)
 
-        return garment
+        return garments
 
-    def add_garment(self, garment):
+    def add_garments(self, garments, garment_type):
 
         garment_dict = {'ShirtMen': self.shirts_men,
                         'ShirtWomen': self.shirts_women,
                         'SockPairUnisex':
                             self.socks_unisex}
-        garment_dict[garment.garment_type].append(garment)
 
-    def add_to_report(self):
-        pass
+        garment_dict[garment_type].extend(garments)
 
+    def add_to_report(self, brand, garment_type, garments):
+        """Report: Brand, garment_type, garment list"""
+
+        report_row = (brand, garment_type, garments)
+        self.report.append(report_row)
+
+    def print_report(self):
+        print("The Report of Today's Filled Orders:\n")
+        for row in self.report:
+            print(f"{row[0]}, {row[1]}")
+            for element in row[2]:
+                print(element)
+            print("-"*80)
 
 
 def main():
-    # path = input("Please input the directory of "
-    #                  "the Excel Order Sheet\n")
+    prompt = "Please input the name of the Excel Order Sheet, " \
+             "including the file extension\n" \
+             "Note: the file should be in the same directory as this " \
+             "program.\n"
+    while True:
 
-    path = Path.cwd()/'orders.xlsx'
+        file_name = input(prompt)
+        if file_name == 'exit':
+            break
 
-    g_maker = GarmentMaker()
+        path = Path.cwd()/file_name
 
-    g_maker.open_order_sheet(path)
+        g_maker = GarmentMaker()
 
-    g_maker.get_orders()
+        if g_maker.open_order_sheet(path):
+            g_maker.process_orders()
+            g_maker.print_report()
+            break
+        else:
+            prompt = "Please try another file name or type 'exit' to " \
+                     "quit the program\n"
+
 
 
 if __name__ == '__main__':
