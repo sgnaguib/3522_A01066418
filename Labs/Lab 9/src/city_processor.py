@@ -148,25 +148,20 @@ class ISSDataRequest:
             "lon": city.lng
         }
 
-        parameters = {
-            "lat": 40.71,
-            "lon": -74
-        }
         response = requests.get(
             cls.OPEN_NOTIFY_OVERHEAD_PASS_URL,
             params=coordinates)
+
+        pass_times = response.json()['response']
+
+        return CityOverheadTimes(city, *pass_times)
+
         # Write request code here!
         # DEBUG:
-        print(response)
-        jprint(response.json())
+        #print(response)
+        #jprint(response.json())
 
 
-def main():
-    db = CityDatabase(Path(Path.cwd()/'city_locations_test.xlsx'))
-    for city in db.city_db:
-        ISSDataRequest.get_overhead_pass(city)
 
 
-if __name__ == '__main__':
-    main()
 
