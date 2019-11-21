@@ -1,0 +1,3 @@
+check = []
+
+print(len(check))

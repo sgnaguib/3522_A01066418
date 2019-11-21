@@ -126,7 +126,7 @@ class CityOverheadTimes:
             times.append(str(iss_pass))
         times = '\n'.join(times)
         return f"The ISS will pass over {self.city.city_name} " \
-            f"{len(self.passes)} times. The times are: \n {times}"
+            f"{len(self.passes)} times. The times are: \n{times}"
 
 
 class ISSDataRequest:
