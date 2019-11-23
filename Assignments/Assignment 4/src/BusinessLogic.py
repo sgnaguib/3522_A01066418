@@ -2,6 +2,12 @@ from pathlib import Path
 import pandas as pd
 from GarmentFactory import *
 
+"""
+This module is responsible for getting order information from 
+an excel spreadsheet, creating garments specified by the orders
+and printing a report.
+"""
+
 
 class Order:
     """
@@ -17,18 +23,21 @@ class Order:
                            'colour': self.details['Colour'],
                            'textile': self.details['Textile'],
                            'sport': self.details['Sport'],
-                           'number_pockets': self.details['Hidden Zipper Pockets'],
-                           'indoor_outdoor_type': self.details['Indoor/Outdoor'],
-                           'requires_iron': self.details['Requires Ironing'],
+                           'number_pockets': self.details
+                           ['Hidden Zipper Pockets'],
+                           'indoor_outdoor_type': self.details
+                           ['Indoor/Outdoor'],
+                           'requires_iron': self.details
+                           ['Requires Ironing'],
                            'number_buttons': self.details['Buttons'],
                            'contains_silver': self.details['Silver'],
                            'contrast_colour': self.details['Stripe'],
-                           'requires_dry_cleaning': self.details['Dry Cleaning'],
+                           'requires_dry_cleaning': self.details
+                           ['Dry Cleaning'],
                            'is_articulated': self.details['Articulated'],
                            'length': self.details['Length'],
                            'garment_type': self.details['Garment']
-
-    }
+                           }
 
 
 class OrderProcessor:
@@ -43,6 +52,7 @@ class OrderProcessor:
         self.order_iter = None
 
     def open_order_sheet(self, path) -> bool:
+        """opens an excel file"""
         file = Path(path)
         valid = True
         try:
@@ -59,6 +69,9 @@ class OrderProcessor:
             return valid
 
     def process_next_order(self):
+        """Gets the next row from the excel sheet,
+        and creates an order based on the extracted
+        information."""
         next_order = next(self.order_iter)
         order_details = next_order[1]
         details_dict = order_details.to_dict()
@@ -68,20 +81,26 @@ class OrderProcessor:
 
 
 class GarmentMaker:
+    """
+    Responsible for getting the orders from the
+    OrderProcessors and passing the order details to the appropriate
+    BrandFactory
+    """
 
     def __init__(self):
         self.shirts_men = []
         self.shirts_women = []
         self.socks_unisex = []
-
         self.report = []
-
         self.processor = OrderProcessor()
 
     def open_order_sheet(self, path):
         return self.processor.open_order_sheet(path)
 
     def process_orders(self):
+        """Gets orders from the processor and creates
+        the garments according to the order specifications,
+        then add the orders to the daily report"""
         orders_left = True
         while orders_left:
             try:
@@ -89,12 +108,14 @@ class GarmentMaker:
             except StopIteration:
                 orders_left = False
             else:
-                garments = self.create_garments(order, order.count)
+                garments = self.create_garments(order)
                 self.add_garments(garments, order.garment_type)
                 self.add_to_report(order.brand, order.garment_type,
                                    garments)
 
-    def create_garments(self, order, count):
+    def create_garments(self, order):
+        """Takes in an order and creates the type and quantity of the
+        garment specified by the order."""
 
         factory_dict = {'Lululime': LuluLimeFactory(),
                         'PineappleRepublic': PineappleRepublicFactory(),
@@ -107,13 +128,17 @@ class GarmentMaker:
                         'SockPairUnisex': factory.create_socks_unisex}
 
         garments = []
-        for i in range(0, count):
-            garment = product_dict[order.garment_type](**order.kw_details)
+        for i in range(0, order.count):
+            garment = \
+                product_dict[order.garment_type](**order.kw_details)
             garments.append(garment)
 
         return garments
 
     def add_garments(self, garments, garment_type):
+        """Adds a list of garments to one of the
+        GarmentMaker's lists, shirts_men, shirts_women or
+        socks_unisex"""
 
         garment_dict = {'ShirtMen': self.shirts_men,
                         'ShirtWomen': self.shirts_women,
@@ -123,8 +148,6 @@ class GarmentMaker:
         garment_dict[garment_type].extend(garments)
 
     def add_to_report(self, brand, garment_type, garments):
-        """Report: Brand, garment_type, garment list"""
-
         report_row = (brand, garment_type, garments)
         self.report.append(report_row)
 

@@ -43,4 +43,8 @@ create child classes for each Brand, ex. ActiveWearWomenNika. The
 BrandFactory interface and its implementations
 would all also need an extra method, create_activewear_women().
 
+*Note I used the sample code for the abstract factory pattern as a 
+template and many of the comments have only been lightly edited and are
+originally Rahul's work.
+
 

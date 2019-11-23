@@ -1,6 +1,6 @@
 """
-This module depicts the use of the Abstract Factory Pattern for a game
-that needs groups of characters for different worlds.
+This module makes use of the Abstract Factory Pattern for a factory
+that needs to make different types of garments for specific brands.
 """
 import abc
 import random
@@ -9,7 +9,7 @@ import enum
 
 class ShirtMen(abc.ABC):
     """
-    Friendly defines the interface for one of the products that the
+    ShirtMen defines the interface for one of the garments that the
     abstract factory pattern is responsible to create.
     """
     @abc.abstractmethod
@@ -27,9 +27,6 @@ class ShirtMen(abc.ABC):
 
 
 class ShirtMenLuluLime(ShirtMen):
-    """
-    MerPerson is a type of Friendly usually found in the Aquatica World.
-    """
 
     def __init__(self, sport, number_pockets, **kwargs):
         super().__init__(**kwargs)
@@ -38,10 +35,6 @@ class ShirtMenLuluLime(ShirtMen):
 
 
 class ShirtMenPineappleRepublic(ShirtMen):
-    """
-    FireSprite is a type of Friendly usually found in the Firelands
-    World.
-    """
 
     def __init__(self, requires_iron, number_buttons, **kwargs):
         super().__init__(**kwargs)
@@ -50,10 +43,6 @@ class ShirtMenPineappleRepublic(ShirtMen):
 
 
 class ShirtMenNika(ShirtMen):
-    """
-    FireSprite is a type of Friendly usually found in the Firelands
-    World.
-    """
 
     def __init__(self, indoor_outdoor_type, **kwargs):
         super().__init__(**kwargs)
@@ -62,7 +51,7 @@ class ShirtMenNika(ShirtMen):
 
 class ShirtWomen(abc.ABC):
     """
-    Enemy defines the interface for one of the products that the
+    ShirtWomen defines the interface for one of the garments that the
     abstract factory pattern is responsible to create.
     """
 
@@ -81,9 +70,6 @@ class ShirtWomen(abc.ABC):
 
 
 class ShirtWomenLuluLime(ShirtWomen):
-    """
-    MerPerson is a type of Friendly usually found in the Aquatica World.
-    """
 
     def __init__(self, sport, number_pockets, **kwargs):
         super().__init__(**kwargs)
@@ -92,10 +78,6 @@ class ShirtWomenLuluLime(ShirtWomen):
 
 
 class ShirtWomenPineappleRepublic(ShirtWomen):
-    """
-    FireSprite is a type of Friendly usually found in the Firelands
-    World.
-    """
 
     def __init__(self, requires_iron, number_buttons, **kwargs):
         super().__init__(**kwargs)
@@ -104,10 +86,6 @@ class ShirtWomenPineappleRepublic(ShirtWomen):
 
 
 class ShirtWomenNika(ShirtWomen):
-    """
-    FireSprite is a type of Friendly usually found in the Firelands
-    World.
-    """
 
     def __init__(self, indoor_outdoor_type, **kwargs):
         super().__init__(**kwargs)
@@ -116,8 +94,8 @@ class ShirtWomenNika(ShirtWomen):
 
 class SockPairUnisex(abc.ABC):
     """
-    Animal defines the interface for one of the products that the
-    abstract factory is responsible to create
+    SockPairUnisex defines the interface for one of the garments that
+    the abstract factory pattern is responsible to create.
     """
 
     @abc.abstractmethod
@@ -135,9 +113,6 @@ class SockPairUnisex(abc.ABC):
 
 
 class SockPairUnisexLuluLime(SockPairUnisex):
-    """
-    MerPerson is a type of Friendly usually found in the Aquatica World.
-    """
 
     def __init__(self, contains_silver, contrast_colour, **kwargs):
         super().__init__(**kwargs)
@@ -146,10 +121,6 @@ class SockPairUnisexLuluLime(SockPairUnisex):
 
 
 class SockPairUnisexPineappleRepublic(SockPairUnisex):
-    """
-    FireSprite is a type of Friendly usually found in the Firelands
-    World.
-    """
 
     def __init__(self, requires_dry_cleaning, **kwargs):
         super().__init__(**kwargs)
@@ -157,10 +128,6 @@ class SockPairUnisexPineappleRepublic(SockPairUnisex):
 
 
 class SockPairUnisexNika(SockPairUnisex):
-    """
-    FireSprite is a type of Friendly usually found in the Firelands
-    World.
-    """
 
     def __init__(self, is_articulated, length, **kwargs):
         super().__init__(**kwargs)
@@ -170,10 +137,10 @@ class SockPairUnisexNika(SockPairUnisex):
 
 class BrandFactory(abc.ABC):
     """
-    The baase factory class. All worlds expect this factory class to
-    populate the world. The CharacterFactory class defines an interface
-    to create the a Product family consisting of Friendlies, Enemies,
-    and Animals. These vary by world.
+    The base factory class. All specific brand factories expect this
+    factory class. The BrandFactory class defines an interface
+    to create the a Product family consisting of men's
+    shirts, women's shirts and unisex socks . These vary by brand.
     """
 
     @abc.abstractmethod
@@ -191,9 +158,8 @@ class BrandFactory(abc.ABC):
 
 class LuluLimeFactory(BrandFactory):
     """
-    This factory class implements the CharacterFactory Interface. It
-    returns a product family consisting of MerPersons, Krakens, and
-    Jellyfish.
+    This LuluLimeFacotry class implements the BrandFactory Interface.
+    It returns garments of made according to the specifics of LuluLime.
     """
 
     def create_shirt_men(self, **kwargs) -> ShirtMen:
@@ -208,9 +174,9 @@ class LuluLimeFactory(BrandFactory):
 
 class PineappleRepublicFactory(BrandFactory):
     """
-    This factory class implements the CharacterFactory Interface. It
-    returns a product family consisting of FireSprites, Imps and
-    Fireflies
+    This PineappleRepublicFactory class implements the BrandFactory
+    Interface.It returns garments of made according to the specifics of
+    PineappleRepublic
     """
 
     def create_shirt_men(self, **kwargs) -> ShirtMen:
@@ -225,9 +191,8 @@ class PineappleRepublicFactory(BrandFactory):
 
 class NikaFactory(BrandFactory):
     """
-    This factory class implements the CharacterFactory Interface. It
-    returns a product family consisting of FireSprites, Imps and
-    Fireflies
+    This NikaFactory class implements the BrandFactory Interface.
+    It returns garments of made according to the specifics of Nika.
     """
 
     def create_shirt_men(self, **kwargs) -> ShirtMen:
