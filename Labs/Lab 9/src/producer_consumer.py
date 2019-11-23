@@ -99,27 +99,27 @@ def main():
     p_thread_2 = ProducerThread(db.city_db[int(length/3):int((2*length)/3)], q)
     p_thread_3 = ProducerThread(db.city_db[int((2 * length / 3)):length], q)
     c_thread_1 = ConsumerThread(q)
-    c_thread_2 = ConsumerThread(q)
-    c_thread_3 = ConsumerThread(q)
+    # c_thread_2 = ConsumerThread(q)
+    # c_thread_3 = ConsumerThread(q)
 
     p_thread_1.start()
     p_thread_2.start()
     p_thread_3.start()
     c_thread_1.start()
-    c_thread_2.start()
-    c_thread_3.start()
+    # c_thread_2.start()
+    # c_thread_3.start()
 
     p_thread_1.join()
     p_thread_2.join()
     p_thread_3.join()
 
     c_thread_1.data_incoming = False
-    c_thread_2.data_incoming = False
-    c_thread_3.data_incoming = False
+    # c_thread_2.data_incoming = False
+    # c_thread_3.data_incoming = False
 
     c_thread_1.join()
-    c_thread_2.join()
-    c_thread_3.join()
+    # c_thread_2.join()
+    # c_thread_3.join()
 
     end_time = time.time()
 

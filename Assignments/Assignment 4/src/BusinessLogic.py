@@ -7,8 +7,7 @@ class Order:
     """
     Stores the order details adn the associated factory
     """
-    def __init__(self, factory, order_details):
-        self.factory = factory
+    def __init__(self, order_details):
         self.details = order_details
         self.garment_type = self.details['Garment']
         self.count = self.details['Count']
@@ -34,38 +33,36 @@ class Order:
 
 class OrderProcessor:
     """
-    Uses the pandas library to extratct the open
+    Uses the pandas library to extract the open
     and orders spreadsheet and extract its orders one at a time
 
     """
-    factory_dict = {'Lululime': LuluLimeFactory(),
-                    'PineappleRepublic': PineappleRepublicFactory(),
-                    'Nika': NikaFactory()}
 
     def __init__(self):
-        self.df = None
+        self.data_frame = None
         self.order_iter = None
 
-    def open_order_sheet(self, path):
+    def open_order_sheet(self, path) -> bool:
         file = Path(path)
+        valid = True
         try:
-            self.df = pd.read_excel(file)
+            self.data_frame = pd.read_excel(file)
         except FileNotFoundError:
-            print("No such file exists in this directory")
-            return False
+            try:
+                self.data_frame = pd.read_excel(Path.cwd()/file)
+            except FileExistsError:
+                print("File Could Not Be Found.")
+                valid = False
         else:
-            self.order_iter = self.df.iterrows()
-            return True
+            self.order_iter = self.data_frame.iterrows()
+        finally:
+            return valid
 
     def process_next_order(self):
         next_order = next(self.order_iter)
         order_details = next_order[1]
-
-        brand_factory = self.factory_dict[order_details['Brand']]
-
         details_dict = order_details.to_dict()
-
-        order = Order(brand_factory, details_dict)
+        order = Order(details_dict)
 
         return order
 
@@ -82,7 +79,7 @@ class GarmentMaker:
         self.processor = OrderProcessor()
 
     def open_order_sheet(self, path):
-        self.processor.open_order_sheet(path)
+        return self.processor.open_order_sheet(path)
 
     def process_orders(self):
         orders_left = True
@@ -99,7 +96,11 @@ class GarmentMaker:
 
     def create_garments(self, order, count):
 
-        factory = order.factory
+        factory_dict = {'Lululime': LuluLimeFactory(),
+                        'PineappleRepublic': PineappleRepublicFactory(),
+                        'Nika': NikaFactory()}
+
+        factory = factory_dict[order.details['Brand']]
 
         product_dict = {'ShirtMen': factory.create_shirt_men,
                         'ShirtWomen': factory.create_shirt_women,
@@ -137,28 +138,25 @@ class GarmentMaker:
 
 
 def main():
-    prompt = "Please input the name of the Excel Order Sheet, " \
-             "including the file extension\n" \
-             "Note: the file should be in the same directory as this " \
-             "program.\n"
-    while True:
+    prompt = "Please the path of the Excel Order Sheet\n"
+    invalid_file = True
+    while invalid_file:
 
-        file_name = input(prompt)
-        if file_name == 'exit':
+        file_path = input(prompt)
+        if file_path == 'exit':
             break
-
-        path = Path.cwd()/file_name
 
         g_maker = GarmentMaker()
-
-        if g_maker.open_order_sheet(path):
+        x = g_maker.open_order_sheet(file_path)
+        print(x)
+        if x:
             g_maker.process_orders()
             g_maker.print_report()
-            break
+            invalid_file = False
         else:
             prompt = "Please try another file name or type 'exit' to " \
                      "quit the program\n"
-
+            invalid_file = True
 
 
 if __name__ == '__main__':

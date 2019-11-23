@@ -7,30 +7,6 @@ import random
 import enum
 
 
-class BrandEnum(enum.Enum):
-    pass
-
-class MenSizeEnum(enum.Enum):
-    S = 0
-    M = 1
-    L = 2
-    XL = 3
-    XXL = 4
-
-class WomenSizeEnum(enum.Enum):
-    XS = 0
-    S = 1
-    M = 2
-    L = 3
-    XL = 4
-    XXL = 5
-
-class UnisexSocksEnum(enum.Enum):
-    S = 0
-    M = 1
-    L = 2
-
-
 class ShirtMen(abc.ABC):
     """
     Friendly defines the interface for one of the products that the
