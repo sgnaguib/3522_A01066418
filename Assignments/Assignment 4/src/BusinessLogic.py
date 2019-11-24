@@ -58,11 +58,8 @@ class OrderProcessor:
         try:
             self.data_frame = pd.read_excel(file)
         except FileNotFoundError:
-            try:
-                self.data_frame = pd.read_excel(Path.cwd()/file)
-            except FileExistsError:
-                print("File Could Not Be Found.")
-                valid = False
+            print("File Could Not Be Found.")
+            valid = False
         else:
             self.order_iter = self.data_frame.iterrows()
         finally:
@@ -170,9 +167,8 @@ def main():
             break
 
         g_maker = GarmentMaker()
-        x = g_maker.open_order_sheet(file_path)
-        print(x)
-        if x:
+
+        if g_maker.open_order_sheet(file_path):
             g_maker.process_orders()
             g_maker.print_report()
             invalid_file = False
