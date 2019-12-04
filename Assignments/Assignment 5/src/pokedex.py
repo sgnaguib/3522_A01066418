@@ -65,7 +65,7 @@ class Pokedex:
         self.request_handler = RequestHandler(self.mode)
 
     def get_output(self):
-        output_data = self.process_input()
+        output_data = str(self.process_input())
 
         if self.output is None:
             print(output_data)
@@ -106,7 +106,7 @@ class Pokedex:
         try:
             poke_objects = asyncio.run(
                 self.request_handler.
-                process_multiple_requests(input_list))
+                process_multiple_requests(input_list, self.expanded))
         except Exception:
             return "Error Processing Multiple Inputs."
         else:
@@ -120,10 +120,10 @@ class Pokedex:
             formatted += '\n'
         return formatted
 
-
     def single_input(self):
         poke_object = asyncio.run(
-            self.request_handler.process_single_request(self.input))
+            self.request_handler.process_single_request(self.input,
+                                                        self.expanded))
         return poke_object
 
 

@@ -1,95 +1,6 @@
 import aiohttp
 import asyncio
-
-
-class Move:
-
-    def __init__(self, name, id, generation, accuracy, pp,
-                 power, type, damage_class, effect_entries):
-
-        self.name = name
-        self.id = id
-        self.generation = generation
-        self.accuracy = accuracy
-        self.pp = pp
-        self.power = power
-        self.type = type
-        self.damage_class = damage_class
-        self.effect = effect_entries
-
-    def __str__(self):
-        return f"Name: {self.name}\n" \
-               f"Id: {self.id}\n" \
-               f"Generation: {self.generation}\n" \
-               f"Accuracy: {self.accuracy}\n" \
-               f"PP: {self.pp}\n" \
-               f"Power: {self.power}\n" \
-               f"Type: {self.type}\n" \
-               f"Damage Class: {self.damage_class}\n" \
-               f"Effect: {self.effect}\n"
-
-
-class Ability:
-
-    def __init__(self, name, id, generation, effect, effect_short,
-                 pokemon):
-
-        self.name = name
-        self.id = id
-        self.generation = generation
-        self.effect = effect
-        self.effect_short = effect_short
-        self.pokemon = pokemon
-
-    def __str__(self):
-        to_string = f"Name: {self.name}\n" \
-               f"Id: {self.id}\n" \
-               f"Generation: {self.generation}\n" \
-               f"Effect: {self.effect}\n" \
-               f"Effect Short: {self.effect_short}\n" \
-               f"Pokemon: {', '.join(self.pokemon)}\n"
-
-        return to_string
-
-
-class Pokemon:
-
-    def __init__(self, name, id, height, weight,
-                 stats, types, abilities, moves):
-
-        self.name = name
-        self.id = id
-        self.height = height
-        self.weight = weight
-        self.stats = stats
-        self.types = types
-        self.abilities = abilities
-        self.moves = moves
-
-    def __str__(self):
-        to_string =  f"Name: {self.name}\n" \
-               f"Id: {self.id}\n" \
-               f"Height: {self.height} decimeters\n" \
-               f"Weight: {self.weight} hectograms\n" \
-               f"Stats:"
-
-        for stat in self.stats:
-            to_string += f'\n~ {stat}'
-
-        to_string += f"\nTypes: {', '.join(self.types)}"
-
-        to_string += '\nAbilities:'
-
-        for ability in self.abilities:
-            to_string += f'\n~ {ability}'
-
-        to_string += '\nMoves:'
-
-        for move in self.moves:
-            to_string += f'\n~ {move}'
-
-        return to_string
-
+from poke_objects import *
 
 
 class RequestHandler:
@@ -121,7 +32,7 @@ class RequestHandler:
         else:
             return json_dict
 
-    async def process_single_request(self, query) -> Move:
+    async def process_single_request(self, query, expanded):
         """
         This function depicts the use of await to showcase how one async
         coroutine can await another async coroutine
@@ -132,12 +43,13 @@ class RequestHandler:
             response = await self.get_data(query, self.url, session)
             # either pokemon, move, or ability
             try:
-                poke_object = self.create_poke_object(response)
+                poke_object = self.create_poke_object(response, expanded)
             except Exception:
                 return response
             return poke_object
 
-    async def process_multiple_requests(self, requests: list) -> list:
+    async def process_multiple_requests(self, requests: list, expanded)\
+            -> list:
         """
         This function depicts the use of asyncio.gather to run multiple
         async coroutines concurrently.
@@ -152,18 +64,20 @@ class RequestHandler:
             poke_objects = []
             for response in responses:
                 try:
-                    poke_object = self.create_poke_object(response)
+                    poke_object = self.create_poke_object(response, expanded)
                 except Exception:
                     poke_objects.append(response)
                 else:
                     poke_objects.append(poke_object)
             return poke_objects
 
-    def create_poke_object(self, response):
-        url_dict = {'pokemon': self.create_pokemon,
-                    'ability': self.create_ability,
+    async def create_poke_object(self, response, expanded):
+        url_dict = {'ability': self.create_ability,
                     'move': self.create_move}
-        return url_dict[self.mode](response)
+        if self.mode == 'pokemon':
+            return await self.create_pokemon(response, expanded)
+        else:
+            return url_dict[self.mode](response)
 
     def create_move(self, response):
         move = Move(response['name'],
@@ -177,7 +91,7 @@ class RequestHandler:
                     response['effect_entries'][0]['short_effect'])
         return move
 
-    def create_pokemon(self, response):
+    async def create_pokemon(self, response, expanded):
 
         moves_list = \
             [element['move']['name'] for element in
@@ -191,18 +105,18 @@ class RequestHandler:
             [element['type']['name'] for element in
              response['types']]
 
-        stats_list = \
-            [element['stat']['name'] for element in
-             response['stats']]
+        stats_list = await \
+            self.create_stat_list(response['stats'], expanded)
+
 
         pokemon = Pokemon(response['name'],
-                        response['id'],
-                        response['height'],
-                        response['weight'],
-                        stats_list,
-                        types_list,
-                        abilities_list,
-                        moves_list)
+                          response['id'],
+                          response['height'],
+                          response['weight'],
+                          stats_list,
+                          types_list,
+                          abilities_list,
+                          moves_list)
         return pokemon
 
     def create_ability(self, response):
@@ -218,11 +132,30 @@ class RequestHandler:
                           pokemon_list)
         return ability
 
+    async def create_stat_list(self, stats, expanded):
 
-def main():
-    pass
+        # sub_url = stats['stat']['url']
+        print(stats)
+        # if expanded:
+        #     expanded_dict = await self.expanded_request(sub_url)
 
+        stat_list = []
+        for stat in stats:
+            sub_url = stat['stat']['url']
+            expanded_dict = asyncio.run(self.expanded_request(sub_url))
+            print(f"TEST!! {expanded_dict['id']}")
+            stat_obj = Stat(stat['stat']['name'],
+                            stat['base_stat'],
+                            expanded)
+            stat_list.append(stat_obj)
 
-if __name__ == '__main__':
-    main()
+        return stat_list
+
+    async def expanded_request(self, target_url):
+        async with aiohttp.ClientSession() as session:
+            response = \
+                await session.request(method="GET", url=target_url)
+            json_dict = await response.json()
+            return json_dict
+
 
