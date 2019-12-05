@@ -24,7 +24,8 @@ class RequestHandler:
 
         response = await session.request(method="GET", url=target_url)
         try:
-            if query == '?': raise Exception
+            if query == '?':
+                raise Exception
             json_dict = await response.json()
         except Exception:
             return f"Error. No data exists for " \
@@ -43,7 +44,8 @@ class RequestHandler:
             response = await self.get_data(query, self.url, session)
             # either pokemon, move, or ability
             try:
-                poke_object = self.create_poke_object(response, expanded)
+                poke_object = \
+                    await self.create_poke_object(response, expanded)
             except Exception:
                 return response
             return poke_object
@@ -64,7 +66,8 @@ class RequestHandler:
             poke_objects = []
             for response in responses:
                 try:
-                    poke_object = self.create_poke_object(response, expanded)
+                    poke_object = await \
+                        self.create_poke_object(response, expanded)
                 except Exception:
                     poke_objects.append(response)
                 else:
@@ -93,13 +96,11 @@ class RequestHandler:
 
     async def create_pokemon(self, response, expanded):
 
-        moves_list = \
-            [element['move']['name'] for element in
-             response['moves']]
+        moves_list = await \
+            self.create_moves_list(response['moves'], expanded)
 
-        abilities_list = \
-            [element['ability']['name'] for element in
-             response['abilities']]
+        abilities_list = await \
+            self.create_ability_list(response['abilities'], expanded)
 
         types_list = \
             [element['type']['name'] for element in
@@ -134,22 +135,56 @@ class RequestHandler:
 
     async def create_stat_list(self, stats, expanded):
 
-        # sub_url = stats['stat']['url']
-        print(stats)
-        # if expanded:
-        #     expanded_dict = await self.expanded_request(sub_url)
-
         stat_list = []
         for stat in stats:
-            sub_url = stat['stat']['url']
-            expanded_dict = asyncio.run(self.expanded_request(sub_url))
-            print(f"TEST!! {expanded_dict['id']}")
-            stat_obj = Stat(stat['stat']['name'],
-                            stat['base_stat'],
-                            expanded)
+            if expanded:
+                sub_url = stat['stat']['url']
+                expanded_dict = await self.expanded_request(sub_url)
+                stat_obj = Stat(stat['stat']['name'],
+                                stat['base_stat'],
+                                expanded,
+                                expanded_dict['id'],
+                                expanded_dict['is_battle_only'])
+            else:
+                stat_obj = Stat(stat['stat']['name'],
+                                stat['base_stat'],
+                                expanded)
+
             stat_list.append(stat_obj)
 
         return stat_list
+
+    async def create_ability_list(self, abilities, expanded):
+
+        ability_list = []
+
+        for ability in abilities:
+            if expanded:
+                sub_url = ability['ability']['url']
+                expanded_dict = await self.expanded_request(sub_url)
+                ability_exp = self.create_ability(expanded_dict)
+                ability_list.append(ability_exp)
+            else:
+                ability_list.append(ability['ability']['name'])
+
+        return ability_list
+
+    async def create_moves_list(self, moves, expanded):
+        moves_list = []
+
+        for move in moves:
+            if expanded:
+                sub_url = move['move']['url']
+                expanded_dict = await self.expanded_request(sub_url)
+                move_exp = self.create_move(expanded_dict)
+                moves_list.append(move_exp)
+            else:
+                name = move['move']['name']
+                level = \
+                    move['version_group_details'][0]['level_learned_at']
+                moves_list.append(f'{name}, acquired at level: '
+                                  f'{level}')
+        return moves_list
 
     async def expanded_request(self, target_url):
         async with aiohttp.ClientSession() as session:

@@ -69,13 +69,13 @@ class Pokedex:
 
         if self.output is None:
             print(output_data)
+            # output_data
         elif self.output.endswith('.txt'):
             with open(self.output, 'w') as file:
                 file.write(output_data)
         else:
             print("Invalid file type for output. Only .txt file are "
                   "accepted as output files.\n")
-
 
     def process_input(self):
         if self.input.endswith('.txt'):

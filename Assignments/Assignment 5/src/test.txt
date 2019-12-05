@@ -1,0 +1,181 @@
+Name: pikachu
+Id: 25
+Height: 4 decimeters
+Weight: 60 hectograms
+Stats:
+~ Stat: speed, Base Value: 90
+~ Stat: special-defense, Base Value: 50
+~ Stat: special-attack, Base Value: 50
+~ Stat: defense, Base Value: 40
+~ Stat: attack, Base Value: 55
+~ Stat: hp, Base Value: 35
+Types: electric
+Abilities:
+~ lightning-rod
+~ static
+Moves:
+~ mega-punch, acquired at level: 0
+~ pay-day, acquired at level: 0
+~ thunder-punch, acquired at level: 0
+~ slam, acquired at level: 37
+~ mega-kick, acquired at level: 0
+~ headbutt, acquired at level: 0
+~ body-slam, acquired at level: 0
+~ take-down, acquired at level: 0
+~ double-edge, acquired at level: 0
+~ tail-whip, acquired at level: 1
+~ growl, acquired at level: 5
+~ surf, acquired at level: 0
+~ submission, acquired at level: 0
+~ counter, acquired at level: 0
+~ seismic-toss, acquired at level: 0
+~ strength, acquired at level: 0
+~ thunder-shock, acquired at level: 1
+~ thunderbolt, acquired at level: 0
+~ thunder-wave, acquired at level: 0
+~ thunder, acquired at level: 0
+~ dig, acquired at level: 0
+~ toxic, acquired at level: 0
+~ agility, acquired at level: 45
+~ quick-attack, acquired at level: 10
+~ rage, acquired at level: 0
+~ mimic, acquired at level: 0
+~ double-team, acquired at level: 23
+~ defense-curl, acquired at level: 0
+~ light-screen, acquired at level: 0
+~ reflect, acquired at level: 0
+~ bide, acquired at level: 0
+~ swift, acquired at level: 0
+~ skull-bash, acquired at level: 0
+~ flash, acquired at level: 0
+~ rest, acquired at level: 0
+~ substitute, acquired at level: 0
+~ snore, acquired at level: 0
+~ curse, acquired at level: 0
+~ protect, acquired at level: 0
+~ mud-slap, acquired at level: 0
+~ zap-cannon, acquired at level: 0
+~ detect, acquired at level: 0
+~ endure, acquired at level: 0
+~ rollout, acquired at level: 0
+~ swagger, acquired at level: 0
+~ spark, acquired at level: 26
+~ attract, acquired at level: 0
+~ sleep-talk, acquired at level: 0
+~ return, acquired at level: 0
+~ frustration, acquired at level: 0
+~ dynamic-punch, acquired at level: 0
+~ iron-tail, acquired at level: 0
+~ hidden-power, acquired at level: 0
+~ rain-dance, acquired at level: 0
+~ rock-smash, acquired at level: 0
+~ facade, acquired at level: 0
+~ focus-punch, acquired at level: 0
+~ helping-hand, acquired at level: 0
+~ brick-break, acquired at level: 0
+~ knock-off, acquired at level: 0
+~ secret-power, acquired at level: 0
+~ signal-beam, acquired at level: 0
+~ covet, acquired at level: 0
+~ shock-wave, acquired at level: 0
+~ natural-gift, acquired at level: 0
+~ feint, acquired at level: 21
+~ fling, acquired at level: 0
+~ magnet-rise, acquired at level: 0
+~ discharge, acquired at level: 34
+~ captivate, acquired at level: 0
+~ grass-knot, acquired at level: 0
+~ charge-beam, acquired at level: 0
+~ electro-ball, acquired at level: 13
+~ round, acquired at level: 0
+~ echoed-voice, acquired at level: 0
+~ volt-switch, acquired at level: 0
+~ electroweb, acquired at level: 0
+~ wild-charge, acquired at level: 0
+~ play-nice, acquired at level: 7
+~ confide, acquired at level: 0
+~ nuzzle, acquired at level: 29
+--------------------------------------------------------------------------------
+Error. No data exists for the query: 123as!
+--------------------------------------------------------------------------------
+Name: pidgey
+Id: 16
+Height: 3 decimeters
+Weight: 18 hectograms
+Stats:
+~ Stat: speed, Base Value: 56
+~ Stat: special-defense, Base Value: 35
+~ Stat: special-attack, Base Value: 35
+~ Stat: defense, Base Value: 40
+~ Stat: attack, Base Value: 45
+~ Stat: hp, Base Value: 40
+Types: flying, normal
+Abilities:
+~ big-pecks
+~ tangled-feet
+~ keen-eye
+Moves:
+~ razor-wind, acquired at level: 0
+~ gust, acquired at level: 9
+~ wing-attack, acquired at level: 33
+~ whirlwind, acquired at level: 17
+~ fly, acquired at level: 0
+~ sand-attack, acquired at level: 5
+~ tackle, acquired at level: 1
+~ take-down, acquired at level: 0
+~ double-edge, acquired at level: 0
+~ toxic, acquired at level: 0
+~ agility, acquired at level: 29
+~ quick-attack, acquired at level: 13
+~ rage, acquired at level: 0
+~ mimic, acquired at level: 0
+~ double-team, acquired at level: 0
+~ reflect, acquired at level: 0
+~ bide, acquired at level: 0
+~ mirror-move, acquired at level: 45
+~ swift, acquired at level: 0
+~ sky-attack, acquired at level: 0
+~ rest, acquired at level: 0
+~ substitute, acquired at level: 0
+~ thief, acquired at level: 0
+~ snore, acquired at level: 0
+~ curse, acquired at level: 0
+~ protect, acquired at level: 0
+~ feint-attack, acquired at level: 0
+~ mud-slap, acquired at level: 0
+~ foresight, acquired at level: 0
+~ detect, acquired at level: 0
+~ endure, acquired at level: 0
+~ swagger, acquired at level: 0
+~ steel-wing, acquired at level: 0
+~ attract, acquired at level: 0
+~ sleep-talk, acquired at level: 0
+~ return, acquired at level: 0
+~ frustration, acquired at level: 0
+~ pursuit, acquired at level: 0
+~ hidden-power, acquired at level: 0
+~ twister, acquired at level: 21
+~ rain-dance, acquired at level: 0
+~ sunny-day, acquired at level: 0
+~ uproar, acquired at level: 0
+~ heat-wave, acquired at level: 0
+~ facade, acquired at level: 0
+~ secret-power, acquired at level: 0
+~ feather-dance, acquired at level: 25
+~ air-cutter, acquired at level: 0
+~ aerial-ace, acquired at level: 0
+~ roost, acquired at level: 0
+~ natural-gift, acquired at level: 0
+~ pluck, acquired at level: 0
+~ tailwind, acquired at level: 41
+~ u-turn, acquired at level: 0
+~ air-slash, acquired at level: 0
+~ brave-bird, acquired at level: 0
+~ defog, acquired at level: 0
+~ captivate, acquired at level: 0
+~ ominous-wind, acquired at level: 0
+~ round, acquired at level: 0
+~ work-up, acquired at level: 0
+~ hurricane, acquired at level: 53
+~ confide, acquired at level: 0
+--------------------------------------------------------------------------------

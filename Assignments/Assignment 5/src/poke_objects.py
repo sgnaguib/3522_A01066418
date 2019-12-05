@@ -14,13 +14,13 @@ class Move:
         self.effect = effect_entries
 
     def __str__(self):
-        return f"Name: {self.name}\n" \
-               f"Id: {self.id}\n" \
-               f"Generation: {self.generation}\n" \
-               f"Accuracy: {self.accuracy}\n" \
-               f"PP: {self.pp}\n" \
-               f"Power: {self.power}\n" \
-               f"Type: {self.type}\n" \
+        return f"Move: {self.name}, " \
+               f"Id: {self.id}, " \
+               f"Generation: {self.generation}, " \
+               f"Accuracy: {self.accuracy}, " \
+               f"PP: {self.pp}, " \
+               f"Power: {self.power}, " \
+               f"Type: {self.type}, " \
                f"Damage Class: {self.damage_class}\n" \
                f"Effect: {self.effect}\n"
 
@@ -38,8 +38,8 @@ class Ability:
         self.pokemon = pokemon
 
     def __str__(self):
-        to_string = f"Name: {self.name}\n" \
-               f"Id: {self.id}\n" \
+        to_string = f"Ability: {self.name}, " \
+               f"Id: {self.id}, " \
                f"Generation: {self.generation}\n" \
                f"Effect: {self.effect}\n" \
                f"Effect Short: {self.effect_short}\n" \
@@ -99,8 +99,8 @@ class Stat:
 
     def __str__(self):
         if self.expanded:
-            return f'Name: {self.name}, ID: {self._id}, ' \
+            return f'Stat: {self.name}, ID: {self._id}, ' \
                    f'Base Value: {self.base_value}, ' \
                    f'Battle Only: {self.is_battle_only}'
         else:
-            return f'Name: {self.name}, Base Value: {self.base_value}'
+            return f'Stat: {self.name}, Base Value: {self.base_value}'
