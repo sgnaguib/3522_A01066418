@@ -1,4 +1,10 @@
+"""
+This module contains all the poke_objects
+"""
+
+
 class Move:
+    """Represents a pokemon move."""
 
     def __init__(self, name, id, generation, accuracy, pp,
                  power, type, damage_class, effect_entries):
@@ -26,6 +32,9 @@ class Move:
 
 
 class Ability:
+    """
+    Represents a pokemon ability.
+    """
 
     def __init__(self, name, id, generation, effect, effect_short,
                  pokemon):
@@ -49,6 +58,9 @@ class Ability:
 
 
 class Pokemon:
+    """
+    Represents a pokemon.
+    """
 
     def __init__(self, name, id, height, weight,
                  stats, types, abilities, moves):
@@ -88,6 +100,9 @@ class Pokemon:
 
 
 class Stat:
+    """
+    Represents the statistics of a pokemon
+    """
 
     def __init__(self, name, base_value, expanded,
                  _id=None, is_battle_only=None):

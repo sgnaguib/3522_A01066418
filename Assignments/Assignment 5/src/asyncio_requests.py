@@ -4,6 +4,10 @@ from poke_objects import *
 
 
 class RequestHandler:
+    """
+    Sends requests to the PokeAPI for detailed information
+    about either a move, pokemon or ability.
+    """
 
     def __init__(self, mode):
         self.mode = mode
@@ -12,10 +16,13 @@ class RequestHandler:
     async def get_data(
             self, query, url: str, session: aiohttp.ClientSession):
         """
-        An async coroutine that executes GET http request. The response is
-        converted to a json. The HTTP request and the json conversion are
+        (Comment written by Rahul. Has been slightly modified.):
+        An async coroutine that executes GET http request to the
+        PokeAPI.
+        The response is converted to a json.
+        The HTTP request and the json conversion are
         asynchronous processes that need to be awaited.
-        :param query: an int or string
+        :param query: an int or a string
         :param url: a string, the unformatted url (missing parameters)
         :param session: a HTTP session
         :return: a dict, json representation of response.
@@ -35,9 +42,11 @@ class RequestHandler:
 
     async def process_single_request(self, query, expanded):
         """
-        This function depicts the use of await to showcase how one async
-        coroutine can await another async coroutine
+        (Comment written by Rahul)
+        Gets response from PokeAPI and tries to create a poke_object
+        with the response.
         :param query: an int
+        :param expanded: boolean
         :return: dict, json response
         """
         async with aiohttp.ClientSession() as session:
@@ -53,8 +62,9 @@ class RequestHandler:
     async def process_multiple_requests(self, requests: list, expanded)\
             -> list:
         """
-        This function depicts the use of asyncio.gather to run multiple
-        async coroutines concurrently.
+        Get multiple responses from the PokeAPI and tries to create
+        a list of corresponding poke_objects.
+        :param expanded: boolean
         :param requests: a list of int's
         :return: list of dict, collection of response data from the
          endpoint.
@@ -75,6 +85,13 @@ class RequestHandler:
             return poke_objects
 
     async def create_poke_object(self, response, expanded):
+        """
+        Determines what kind of poke_object to create with the
+        response.
+        :param response: HTTP response from PokeAPI
+        :param expanded: boolean
+        :return:
+        """
         url_dict = {'ability': self.create_ability,
                     'move': self.create_move}
         if self.mode == 'pokemon':
@@ -83,6 +100,11 @@ class RequestHandler:
             return url_dict[self.mode](response)
 
     def create_move(self, response):
+        """
+        Uses the PokeAPI response to create a Move object.
+        :param response:
+        :return: Move
+        """
         move = Move(response['name'],
                     response['id'],
                     response['generation']['name'],
@@ -95,6 +117,12 @@ class RequestHandler:
         return move
 
     async def create_pokemon(self, response, expanded):
+        """
+         Uses the PokeAPI response to create a Pokemon object.
+          :param response:
+          :param expanded: boolean
+          :return: Pokemon
+        """
 
         moves_list = await \
             self.create_moves_list(response['moves'], expanded)
@@ -109,7 +137,6 @@ class RequestHandler:
         stats_list = await \
             self.create_stat_list(response['stats'], expanded)
 
-
         pokemon = Pokemon(response['name'],
                           response['id'],
                           response['height'],
@@ -121,6 +148,11 @@ class RequestHandler:
         return pokemon
 
     def create_ability(self, response):
+        """
+         Uses the PokeAPI response to create an Ability object.
+        :param response:
+        :return: Ability
+        """
 
         pokemon_list =\
             [element['pokemon']['name'] for element in response['pokemon']]
@@ -134,6 +166,12 @@ class RequestHandler:
         return ability
 
     async def create_stat_list(self, stats, expanded):
+        """ Uses the PokeAPI stats response to create a list
+            Stat object.
+          :param stats:
+          :param expanded: boolean
+          :return: List of Stat objects
+          """
 
         stat_list = []
         for stat in stats:
@@ -155,6 +193,12 @@ class RequestHandler:
         return stat_list
 
     async def create_ability_list(self, abilities, expanded):
+        """ Uses the PokeAPI abilities response to create a list
+            Ability object.
+          :param abilities: list of abilities
+          :param expanded: boolean
+          :return: List of Stat objects
+          """
 
         ability_list = []
 
@@ -170,6 +214,12 @@ class RequestHandler:
         return ability_list
 
     async def create_moves_list(self, moves, expanded):
+        """ Uses the PokeAPI moves response to create a list
+            Move object.
+          :param moves:
+          :param expanded: boolean
+          :return: List of Stat objects
+          """
         moves_list = []
 
         for move in moves:
@@ -187,6 +237,8 @@ class RequestHandler:
         return moves_list
 
     async def expanded_request(self, target_url):
+        """Send an HTTP request to the PokeAPI to retrieve
+        more information for the Pokemon object"""
         async with aiohttp.ClientSession() as session:
             response = \
                 await session.request(method="GET", url=target_url)
