@@ -35,7 +35,6 @@ class Ability:
     """
     Represents a pokemon ability.
     """
-
     def __init__(self, name, id, generation, effect, effect_short,
                  pokemon):
 
